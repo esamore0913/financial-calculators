@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="zh-CN">
 <html lang="en">
 <head>
+  <meta name="google-adsense-account" content="ca-pub-5526769191135274">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5526769191135274"
+     crossorigin="anonymous"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Financial Decision Calculators</title>
   <title>Financial Decision Calculators | Compound Interest, CAGR, Inflation and Savings Planner</title>
   <meta name="description" content="Free bilingual financial decision calculators for compound interest, CAGR, regular contribution returns, inflation purchasing power, and delayed spending goals.">
   <meta name="keywords" content="financial calculator, compound interest calculator, CAGR calculator, IRR calculator, inflation calculator, savings goal calculator, retirement planning, investment planning, 财务计算器, 复利计算器, 年化收益率, 通胀计算器, 储蓄目标">
@@ -27,6 +28,121 @@
   <style>
     :root {
       --bg: #f6f7fb;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #d9dee8;
+      --blue: #2563eb;
+      --green: #059669;
+      --amber: #d97706;
+      --red: #dc2626;
+      --shadow: 0 10px 28px rgba(31, 41, 55, .08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    header {
+      color: #fff;
+      background: linear-gradient(120deg, #1d4ed8, #4338ca);
+      padding: 24px 18px;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    h1 { margin: 0; font-size: clamp(24px, 3vw, 34px); letter-spacing: 0; }
+    .subtitle { margin: 6px 0 0; color: #dbeafe; font-size: 14px; }
+    main { padding: 22px 18px 34px; }
+    button, select, input { font: inherit; }
+    .ghost {
+      border: 1px solid rgba(255,255,255,.45);
+      color: #fff;
+      background: rgba(255,255,255,.12);
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+    .tab {
+      min-height: 44px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .tab.active { color: #fff; background: var(--blue); }
+    .panel {
+      display: none;
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+    .panel.active { display: block; }
+    .panel h2 { margin: 0 0 6px; font-size: 22px; }
+    .hint { margin: 0 0 20px; color: var(--muted); font-size: 14px; }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(240px, 320px) minmax(220px, 290px) 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .fields { display: grid; gap: 14px; }
+    label { display: block; margin-bottom: 6px; color: #374151; font-size: 13px; font-weight: 700; }
+    input, select {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid #cfd6e3;
+      border-radius: 8px;
+      background: #fff;
+      padding: 9px 10px;
+      color: var(--text);
+    }
+    input:focus, select:focus { outline: 3px solid rgba(37, 99, 235, .18); border-color: var(--blue); }
+    .results {
+      border-radius: 10px;
+      border: 1px solid #c7d2fe;
+      background: #eef2ff;
+      padding: 18px;
+      display: grid;
+      align-content: space-between;
+      gap: 14px;
+    }
+    .kicker { color: #475569; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+    .metric { margin-top: 2px; font-size: 18px; font-weight: 800; overflow-wrap: anywhere; }
+    .metric.big { font-size: clamp(24px, 3vw, 34px); color: var(--blue); }
+    .metric.good { color: var(--green); }
+    .metric.bad { color: var(--red); }
+    .chartbox {
+      min-height: 300px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcff;
+      padding: 12px;
+    }
+    canvas { width: 100%; height: 260px; display: block; }
+    .note {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcff;
+      padding: 14px;
+      color: #475569;
       font-size: 14px;
       line-height: 1.65;
     }
@@ -63,10 +179,42 @@
       .advice { grid-template-columns: 1fr; }
     }
   </style>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5526769191135274"
-     crossorigin="anonymous"></script>
-    <meta name="google-adsense-account" content="ca-pub-5526769191135274">
 </head>
+<body>
+  <header>
+    <div class="wrap topbar">
+      <div>
+        <h1 data-i18n="title">财务决策计算器</h1>
+        <p class="subtitle" data-i18n="subtitle">复利、真实年化、通胀购买力和延迟消费的即时测算。</p>
+      </div>
+      <button class="ghost" id="langBtn" type="button">English</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="tabs" aria-label="Calculator tabs">
+      <button class="tab active" data-tab="compound" type="button" data-i18n="tabCompound">复利增长</button>
+      <button class="tab" data-tab="return" type="button" data-i18n="tabReturn">真实年化</button>
+      <button class="tab" data-tab="inflation" type="button" data-i18n="tabInflation">通胀侵蚀</button>
+      <button class="tab" data-tab="delay" type="button" data-i18n="tabDelay">延迟消费</button>
+    </nav>
+
+    <section class="panel active" id="compound">
+      <h2 data-i18n="compoundTitle">核心资产复利计算</h2>
+      <p class="hint" data-i18n="compoundHint">输入本金、月投入、收益率和年限，查看本金与收益如何随时间增长。</p>
+      <div class="grid">
+        <div class="fields">
+          <div><label data-i18n="initial">初始本金</label><input id="cInitial" type="number" min="0" step="100" value="100000"></div>
+          <div><label data-i18n="monthly">每月投入</label><input id="cMonthly" type="number" min="0" step="100" value="10000"></div>
+          <div><label data-i18n="returnRate">预期年化收益率 (%)</label><input id="cRate" type="number" step="0.1" value="7"></div>
+          <div><label data-i18n="years">年限</label><input id="cYears" type="number" min="1" max="60" step="1" value="20"></div>
+          <div><label data-i18n="timing">投入时间</label><select id="cTiming"><option value="end" data-i18n="endMonth">每月末</option><option value="start" data-i18n="startMonth">每月初</option></select></div>
+        </div>
+        <div class="results">
+          <div><div class="kicker" data-i18n="principal">累计本金</div><div class="metric" id="cCost">$0</div></div>
+          <div><div class="kicker" data-i18n="interest">累计收益</div><div class="metric good" id="cInterest">$0</div></div>
+          <div><div class="kicker" data-i18n="futureValue">未来资产</div><div class="metric big" id="cTotal">$0</div></div>
+        </div>
         <div class="chartbox"><canvas id="cChart"></canvas></div>
       </div>
       <div class="note" data-i18n="compoundNote">改进点：支持月初/月末投入，避免把年限强制改成隐藏值，并且所有计算都经过输入校验。</div>
@@ -87,6 +235,20 @@
     </section>
 
     <section class="panel" id="return">
+      <h2 data-i18n="returnTitle">CAGR / 定投年化计算</h2>
+      <p class="hint" data-i18n="returnHint">区分一次性投入和周期投入，避免只看总收益率而误判表现。</p>
+      <div class="grid">
+        <div class="fields">
+          <div><label data-i18n="mode">投资模式</label><select id="rMode"><option value="single" data-i18n="single">一次性投入</option><option value="annual" data-i18n="annual">每年定投</option></select></div>
+          <div><label id="rPrincipalLabel" data-i18n="initial">初始本金</label><input id="rPrincipal" type="number" min="0" step="100" value="100000"></div>
+          <div><label data-i18n="finalValue">当前/最终资产</label><input id="rFinal" type="number" min="0" step="100" value="150000"></div>
+          <div><label data-i18n="years">年限</label><input id="rYears" type="number" min="0.1" step="0.1" value="3"></div>
+        </div>
+        <div class="results">
+          <div><div class="kicker" data-i18n="principal">累计本金</div><div class="metric" id="rCost">$0</div></div>
+          <div><div class="kicker" data-i18n="totalReturn">总收益率</div><div class="metric" id="rTotalRate">0.00%</div></div>
+          <div><div class="kicker" data-i18n="annualReturn">真实年化</div><div class="metric big" id="rAnnual">0.00%</div></div>
+        </div>
         <div class="chartbox"><canvas id="rChart"></canvas></div>
       </div>
       <div class="note" data-i18n="returnNote">改进点：定投模式使用二分法求解收益率，并处理亏损、零本金、极端收益率等边界情况。</div>
@@ -107,6 +269,19 @@
     </section>
 
     <section class="panel" id="inflation">
+      <h2 data-i18n="inflationTitle">通胀购买力计算</h2>
+      <p class="hint" data-i18n="inflationHint">查看未来现金折算到今天的购买力，以及要维持购买力需要准备多少名义金额。</p>
+      <div class="grid">
+        <div class="fields">
+          <div><label data-i18n="amount">当前金额</label><input id="iAmount" type="number" min="0" step="100" value="1000000"></div>
+          <div><label data-i18n="inflationRate">年通胀率 (%)</label><input id="iRate" type="number" step="0.1" value="3"></div>
+          <div><label data-i18n="years">年限</label><input id="iYears" type="number" min="1" max="60" step="1" value="25"></div>
+        </div>
+        <div class="results">
+          <div><div class="kicker" data-i18n="realPower">未来实际购买力</div><div class="metric" id="iReal">$0</div></div>
+          <div><div class="kicker" data-i18n="loss">购买力损失</div><div class="metric bad" id="iLoss">0.00%</div></div>
+          <div><div class="kicker" data-i18n="needed">等值未来金额</div><div class="metric big" id="iNeeded">$0</div></div>
+        </div>
         <div class="chartbox"><canvas id="iChart"></canvas></div>
       </div>
       <div class="note" data-i18n="inflationNote">改进点：同时给出“缩水后的购买力”和“保持购买力所需的未来金额”，决策信息更完整。</div>
@@ -127,6 +302,21 @@
     </section>
 
     <section class="panel" id="delay">
+      <h2 data-i18n="delayTitle">延迟消费未来价值</h2>
+      <p class="hint" data-i18n="delayHint">把被省下来的消费转换成定期投资，估算长期复利结果。</p>
+      <div class="grid">
+        <div class="fields">
+          <div><label data-i18n="preset">消费类型</label><select id="dPreset"><option value="150,365" data-i18n="coffee">每天省 150</option><option value="3000,12" data-i18n="monthlyExpense">每月省 3000</option><option value="35000,1" data-i18n="phone">每年省 35000</option><option value="custom" data-i18n="custom">自定义</option></select></div>
+          <div><label data-i18n="amount">金额</label><input id="dAmount" type="number" min="0" step="10" value="150"></div>
+          <div><label data-i18n="frequency">频率</label><select id="dFreq"><option value="365" data-i18n="daily">每天</option><option value="12" data-i18n="monthlyFreq">每月</option><option value="1" data-i18n="yearly">每年</option></select></div>
+          <div><label data-i18n="returnRate">预期年化收益率 (%)</label><input id="dRate" type="number" step="0.1" value="8"></div>
+          <div><label data-i18n="years">年限</label><input id="dYears" type="number" min="1" max="60" step="1" value="20"></div>
+        </div>
+        <div class="results">
+          <div><div class="kicker" data-i18n="saved">累计省下本金</div><div class="metric" id="dSaved">$0</div></div>
+          <div><div class="kicker" data-i18n="interest">累计收益</div><div class="metric good" id="dInterest">$0</div></div>
+          <div><div class="kicker" data-i18n="futureValue">未来资产</div><div class="metric big" id="dTotal">$0</div></div>
+        </div>
         <div class="chartbox"><canvas id="dChart"></canvas></div>
       </div>
       <div class="note" data-i18n="delayNote">改进点：预设和自定义输入分离，金额、频率、收益率、年限都可以独立调整。</div>
@@ -151,3 +341,312 @@
 
   <script>
     const seo = {
+      en: {
+        title: "Financial Decision Calculators | Compound Interest, CAGR, Inflation and Savings Planner",
+        description: "Free bilingual financial decision calculators for compound interest, CAGR, regular contribution returns, inflation purchasing power, and delayed spending goals.",
+        keywords: "financial calculator, compound interest calculator, CAGR calculator, IRR calculator, inflation calculator, savings goal calculator, retirement planning, investment planning",
+        locale: "en_US"
+      },
+      zh: {
+        title: "财务决策计算器 | 复利、年化收益、通胀和储蓄目标规划",
+        description: "免费中英文财务决策计算器，支持复利、CAGR、定投年化、通胀购买力和延迟消费目标规划。",
+        keywords: "财务计算器, 复利计算器, CAGR计算器, IRR计算器, 年化收益率, 通胀购买力, 储蓄目标, 退休规划, 投资规划",
+        locale: "zh_CN"
+      }
+    };
+
+    const text = {
+      zh: {
+        title: "财务决策计算器", subtitle: "复利、真实年化、通胀购买力和延迟消费的即时测算。",
+        tabCompound: "复利增长", tabReturn: "真实年化", tabInflation: "通胀侵蚀", tabDelay: "延迟消费",
+        compoundTitle: "核心资产复利计算", compoundHint: "输入本金、月投入、收益率和年限，查看本金与收益如何随时间增长。",
+        returnTitle: "CAGR / 定投年化计算", returnHint: "区分一次性投入和周期投入，避免只看总收益率而误判表现。",
+        inflationTitle: "通胀购买力计算", inflationHint: "查看未来现金折算到今天的购买力，以及要维持购买力需要准备多少名义金额。",
+        delayTitle: "延迟消费未来价值", delayHint: "把被省下来的消费转换成定期投资，估算长期复利结果。",
+        initial: "初始本金", monthly: "每月投入", returnRate: "预期年化收益率 (%)", years: "年限", timing: "投入时间",
+        endMonth: "每月末", startMonth: "每月初", principal: "累计本金", interest: "累计收益", futureValue: "未来资产",
+        mode: "投资模式", single: "一次性投入", annual: "每年定投", finalValue: "当前/最终资产", totalReturn: "总收益率", annualReturn: "真实年化",
+        amount: "当前金额", inflationRate: "年通胀率 (%)", realPower: "未来实际购买力", loss: "购买力损失", needed: "等值未来金额",
+        preset: "消费类型", coffee: "每天省 150", monthlyExpense: "每月省 3000", phone: "每年省 35000", custom: "自定义",
+        frequency: "频率", daily: "每天", monthlyFreq: "每月", yearly: "每年", saved: "累计省下本金",
+        compoundNote: "改进点：支持月初/月末投入，避免把年限强制改成隐藏值，并且所有计算都经过输入校验。",
+        returnNote: "改进点：定投模式使用二分法求解收益率，并处理亏损、零本金、极端收益率等边界情况。",
+        inflationNote: "改进点：同时给出“缩水后的购买力”和“保持购买力所需的未来金额”，决策信息更完整。",
+        delayNote: "改进点：预设和自定义输入分离，金额、频率、收益率、年限都可以独立调整。",
+        compoundTargetTitle: "建议目标", compoundTarget: "先建立 12 个月紧急备用金，再把每月投入导向 10 年核心资产组合目标。",
+        compoundStepsTitle: "改善步骤", compoundStep1: "设定一个即使收入波动也能持续执行的月投入金额。", compoundStep2: "每年复核预期收益率，不因为短期市场噪音频繁修改。", compoundStep3: "每次加薪后先提高投入金额，再增加生活消费。",
+        returnTargetTitle: "建议目标", returnTarget: "让长期真实年化收益高于个人基准，例如通胀率加 3%。",
+        returnStepsTitle: "改善步骤", returnStep1: "把 CAGR 或定投 IRR 与宽基市场基准进行比较。", returnStep2: "判断表现前，先区分新增本金和真实投资收益。", returnStep3: "连续多个复盘周期落后基准的资产，应考虑再平衡或简化配置。",
+        inflationTargetTitle: "建议目标", inflationTarget: "让退休、教育等长期目标的真实购买力至少保持今天价值的 80%。",
+        inflationStepsTitle: "改善步骤", inflationStep1: "对必要支出使用偏保守的通胀率。", inflationStep2: "长期目标应匹配有机会跑赢通胀的资产。", inflationStep3: "随着价格和人生计划变化，每年更新目标金额。",
+        delayTargetTitle: "建议目标", delayTarget: "把一项可减少的周期性消费，转化为至少持续 12 个月的自动投资习惯。",
+        delayStepsTitle: "改善步骤", delayStep1: "选择一项容易减少、又不明显影响生活质量的消费。", delayStep2: "按同样金额和频率建立自动转账或自动投资。", delayStep3: "每月检查进度，习惯稳定后再提高储蓄金额。",
+        footer: "计算结果仅用于学习和规划参考，不构成投资建议。"
+      },
+      en: {
+        title: "Financial Decision Calculators", subtitle: "Instant projections for compounding, annualized returns, inflation, and delayed spending.",
+        tabCompound: "Compound Growth", tabReturn: "True Return", tabInflation: "Inflation", tabDelay: "Delayed Spending",
+        compoundTitle: "Core Asset Compound Calculator", compoundHint: "Enter principal, monthly contributions, return, and years to see how wealth compounds.",
+        returnTitle: "CAGR / Regular Contribution Return", returnHint: "Separate lump-sum investing from periodic contributions so total return does not mislead you.",
+        inflationTitle: "Inflation Purchasing Power Calculator", inflationHint: "See future cash in today's purchasing power and the nominal amount required to preserve it.",
+        delayTitle: "Delayed Spending Future Value", delayHint: "Turn avoided spending into regular investing and estimate the long-term result.",
+        initial: "Initial principal", monthly: "Monthly contribution", returnRate: "Expected annual return (%)", years: "Years", timing: "Contribution timing",
+        endMonth: "End of month", startMonth: "Start of month", principal: "Total principal", interest: "Total earnings", futureValue: "Future value",
+        mode: "Investment mode", single: "Lump sum", annual: "Annual contribution", finalValue: "Current/final value", totalReturn: "Total return", annualReturn: "Annualized return",
+        amount: "Current amount", inflationRate: "Annual inflation (%)", realPower: "Future real power", loss: "Purchasing power loss", needed: "Equivalent future amount",
+        preset: "Expense type", coffee: "Save 150 daily", monthlyExpense: "Save 3000 monthly", phone: "Save 35000 yearly", custom: "Custom",
+        frequency: "Frequency", daily: "Daily", monthlyFreq: "Monthly", yearly: "Yearly", saved: "Saved principal",
+        compoundNote: "Improvement: contribution timing is explicit, year inputs are validated, and calculations avoid hidden coercion.",
+        returnNote: "Improvement: regular contribution mode solves annual return by bisection and handles losses, zero principal, and extreme inputs.",
+        inflationNote: "Improvement: shows both reduced purchasing power and the future nominal amount needed to keep today's power.",
+        delayNote: "Improvement: presets and custom values are separated while amount, frequency, return, and years stay editable.",
+        compoundTargetTitle: "Suggested target", compoundTarget: "Build a 12-month emergency reserve first, then invest monthly toward a 10-year core portfolio goal.",
+        compoundStepsTitle: "Improvement steps", compoundStep1: "Set a monthly contribution that can survive income changes.", compoundStep2: "Review the expected return every year instead of changing it after market noise.", compoundStep3: "Increase the contribution after every salary raise before lifestyle spending rises.",
+        returnTargetTitle: "Suggested target", returnTarget: "Keep long-term annualized return above your personal benchmark, such as inflation plus 3%.",
+        returnStepsTitle: "Improvement steps", returnStep1: "Compare CAGR or contribution IRR against a broad market benchmark.", returnStep2: "Separate new cash contributions from investment gains before judging performance.", returnStep3: "Rebalance or simplify assets that lag the benchmark for several review periods.",
+        inflationTargetTitle: "Suggested target", inflationTarget: "Protect retirement or education goals so real purchasing power remains at least 80% of today's value.",
+        inflationStepsTitle: "Improvement steps", inflationStep1: "Use a conservative inflation rate for essential expenses.", inflationStep2: "Match long-term goals with assets that can reasonably outpace inflation.", inflationStep3: "Update the target amount yearly as prices and life plans change.",
+        delayTargetTitle: "Suggested target", delayTarget: "Turn one avoidable recurring expense into an automatic investment habit for at least 12 months.",
+        delayStepsTitle: "Improvement steps", delayStep1: "Choose one expense that is easy to reduce without harming daily life.", delayStep2: "Create an automatic transfer for the same amount and frequency.", delayStep3: "Check progress monthly, then raise the saved amount when the habit feels stable.",
+        footer: "Results are for education and planning only, not investment advice."
+      }
+    };
+
+    let lang = new URLSearchParams(window.location.search).get("lang") === "zh" ? "zh" : "en";
+    const $ = id => document.getElementById(id);
+    const num = (id, fallback = 0) => {
+      const value = Number($(id).value);
+      return Number.isFinite(value) ? value : fallback;
+    };
+    const money = value => new Intl.NumberFormat(lang === "zh" ? "zh-CN" : "en-US", {
+      style: "currency", currency: "USD", maximumFractionDigits: 0
+    }).format(Number.isFinite(value) ? value : 0);
+    const pct = value => `${value >= 0 ? "+" : ""}${(value * 100).toFixed(2)}%`;
+
+    function applyLanguage() {
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      updateSeo();
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.dataset.i18n;
+        if (text[lang][key]) el.textContent = text[lang][key];
+      });
+      $("langBtn").textContent = lang === "zh" ? "English" : "中文";
+      $("rPrincipalLabel").textContent = $("rMode").value === "annual" ? text[lang].annual : text[lang].initial;
+      renderAll();
+    }
+
+    function setMeta(selector, value) {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute("content", value);
+    }
+
+    function updateSeo() {
+      const current = seo[lang];
+      document.title = current.title;
+      setMeta('meta[name="description"]', current.description);
+      setMeta('meta[name="keywords"]', current.keywords);
+      setMeta('meta[property="og:title"]', text[lang].title);
+      setMeta('meta[property="og:description"]', current.description);
+      setMeta('meta[property="og:locale"]', current.locale);
+      setMeta('meta[name="twitter:title"]', text[lang].title);
+      setMeta('meta[name="twitter:description"]', current.description);
+    }
+
+    function drawLine(canvas, series, labels) {
+      const ctx = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth * dpr, h = canvas.clientHeight * dpr;
+      canvas.width = w; canvas.height = h;
+      ctx.clearRect(0, 0, w, h);
+      const pad = 42 * dpr;
+      const all = series.flatMap(s => s.data);
+      const max = Math.max(1, ...all), min = Math.min(0, ...all);
+      ctx.strokeStyle = "#d9dee8"; ctx.lineWidth = dpr;
+      for (let i = 0; i <= 4; i++) {
+        const y = pad + (h - pad * 1.6) * i / 4;
+        ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - 12 * dpr, y); ctx.stroke();
+      }
+      series.forEach(s => {
+        ctx.strokeStyle = s.color; ctx.lineWidth = 3 * dpr; ctx.beginPath();
+        s.data.forEach((v, i) => {
+          const x = pad + (w - pad - 12 * dpr) * (i / Math.max(1, s.data.length - 1));
+          const y = h - pad - ((v - min) / (max - min || 1)) * (h - pad * 1.8);
+          i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+        });
+        ctx.stroke();
+      });
+      ctx.fillStyle = "#6b7280"; ctx.font = `${12 * dpr}px sans-serif`;
+      ctx.fillText(money(max), 8 * dpr, pad);
+      ctx.fillText(labels[labels.length - 1] || "", pad, h - 10 * dpr);
+    }
+
+    function drawBars(canvas, principal, gains) {
+      const ctx = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth * dpr, h = canvas.clientHeight * dpr;
+      canvas.width = w; canvas.height = h;
+      ctx.clearRect(0, 0, w, h);
+      const pad = 38 * dpr, gap = 3 * dpr;
+      const count = principal.length, max = Math.max(1, ...principal.map((v, i) => v + gains[i]));
+      const bw = Math.max(2 * dpr, (w - pad - 18 * dpr) / count - gap);
+      for (let i = 0; i < count; i++) {
+        const x = pad + i * (bw + gap);
+        const ph = principal[i] / max * (h - pad * 1.8);
+        const gh = gains[i] / max * (h - pad * 1.8);
+        ctx.fillStyle = "#a7f3d0"; ctx.fillRect(x, h - pad - ph, bw, ph);
+        ctx.fillStyle = "#059669"; ctx.fillRect(x, h - pad - ph - gh, bw, gh);
+      }
+      ctx.fillStyle = "#6b7280"; ctx.font = `${12 * dpr}px sans-serif`;
+      ctx.fillText(money(max), 8 * dpr, pad);
+    }
+
+    function drawPie(canvas, cost, profit) {
+      const ctx = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth * dpr, h = canvas.clientHeight * dpr;
+      canvas.width = w; canvas.height = h;
+      ctx.clearRect(0, 0, w, h);
+      const total = Math.max(1, cost + Math.max(0, profit));
+      const r = Math.min(w, h) * .32, cx = w * .5, cy = h * .48;
+      let start = -Math.PI / 2;
+      [[cost, "#2563eb"], [Math.max(0, profit), "#059669"]].forEach(part => {
+        const end = start + Math.PI * 2 * part[0] / total;
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, start, end); ctx.closePath();
+        ctx.fillStyle = part[1]; ctx.fill(); start = end;
+      });
+      ctx.fillStyle = "#374151"; ctx.font = `${13 * dpr}px sans-serif`;
+      ctx.fillText(`${text[lang].principal}: ${money(cost)}`, 18 * dpr, h - 38 * dpr);
+      ctx.fillText(`${text[lang].interest}: ${money(profit)}`, 18 * dpr, h - 18 * dpr);
+    }
+
+    function years(id) { return Math.min(60, Math.max(1, Math.round(num(id, 1)))); }
+
+    function calcCompound() {
+      const initial = Math.max(0, num("cInitial"));
+      const monthly = Math.max(0, num("cMonthly"));
+      const rate = num("cRate") / 100 / 12;
+      const y = years("cYears");
+      const start = $("cTiming").value === "start";
+      let total = initial, cost = initial, labels = ["0"], costs = [cost], totals = [total];
+      for (let year = 1; year <= y; year++) {
+        for (let m = 0; m < 12; m++) {
+          if (start) { total += monthly; cost += monthly; total *= 1 + rate; }
+          else { total *= 1 + rate; total += monthly; cost += monthly; }
+        }
+        labels.push(String(year)); costs.push(cost); totals.push(total);
+      }
+      $("cCost").textContent = money(cost);
+      $("cInterest").textContent = money(total - cost);
+      $("cTotal").textContent = money(total);
+      drawLine($("cChart"), [{ data: costs, color: "#94a3b8" }, { data: totals, color: "#2563eb" }], labels);
+    }
+
+    function solveAnnualContributionRate(payment, yearsCount, finalValue) {
+      if (payment <= 0 || yearsCount <= 0) return 0;
+      let low = -0.95, high = 5;
+      for (let i = 0; i < 120; i++) {
+        const mid = (low + high) / 2;
+        let fv = 0;
+        for (let t = 1; t <= yearsCount; t++) fv = (fv + payment) * (1 + mid);
+        if (fv > finalValue) high = mid; else low = mid;
+      }
+      return (low + high) / 2;
+    }
+
+    function calcReturn() {
+      const mode = $("rMode").value;
+      const principal = Math.max(0, num("rPrincipal"));
+      const finalValue = Math.max(0, num("rFinal"));
+      const y = Math.max(.1, num("rYears", 1));
+      const fullYears = Math.max(1, Math.round(y));
+      let cost, annual;
+      if (mode === "single") {
+        cost = principal;
+        annual = principal > 0 && finalValue > 0 ? Math.pow(finalValue / principal, 1 / y) - 1 : 0;
+      } else {
+        cost = principal * fullYears;
+        annual = solveAnnualContributionRate(principal, fullYears, finalValue);
+      }
+      const totalRate = cost > 0 ? (finalValue - cost) / cost : 0;
+      $("rCost").textContent = money(cost);
+      $("rTotalRate").textContent = pct(totalRate);
+      $("rTotalRate").className = `metric ${totalRate < 0 ? "bad" : "good"}`;
+      $("rAnnual").textContent = pct(annual);
+      $("rAnnual").className = `metric big ${annual < 0 ? "bad" : ""}`;
+      drawPie($("rChart"), cost, finalValue - cost);
+    }
+
+    function calcInflation() {
+      const amount = Math.max(0, num("iAmount"));
+      const rate = num("iRate") / 100;
+      const y = years("iYears");
+      const real = amount / Math.pow(1 + rate, y);
+      const needed = amount * Math.pow(1 + rate, y);
+      const loss = amount > 0 ? (amount - real) / amount : 0;
+      const data = [], labels = [];
+      for (let year = 0; year <= y; year++) {
+        data.push(amount / Math.pow(1 + rate, year)); labels.push(String(year));
+      }
+      $("iReal").textContent = money(real);
+      $("iLoss").textContent = `${(loss * 100).toFixed(2)}%`;
+      $("iNeeded").textContent = money(needed);
+      drawLine($("iChart"), [{ data, color: "#d97706" }], labels);
+    }
+
+    function calcDelay() {
+      const amount = Math.max(0, num("dAmount"));
+      const freq = Math.max(1, num("dFreq", 1));
+      const rate = num("dRate") / 100;
+      const y = years("dYears");
+      const annual = amount * freq;
+      const saved = [], gain = [];
+      let value = 0;
+      for (let year = 1; year <= y; year++) {
+        value = (value + annual) * (1 + rate);
+        const cost = annual * year;
+        saved.push(cost); gain.push(Math.max(0, value - cost));
+      }
+      const totalSaved = annual * y;
+      $("dSaved").textContent = money(totalSaved);
+      $("dInterest").textContent = money(value - totalSaved);
+      $("dTotal").textContent = money(value);
+      drawBars($("dChart"), saved, gain);
+    }
+
+    function renderAll() {
+      calcCompound();
+      calcReturn();
+      calcInflation();
+      calcDelay();
+    }
+
+    document.querySelectorAll(".tab").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".tab,.panel").forEach(el => el.classList.remove("active"));
+        button.classList.add("active");
+        $(button.dataset.tab).classList.add("active");
+        renderAll();
+      });
+    });
+    document.querySelectorAll("input,select").forEach(el => el.addEventListener("input", renderAll));
+    document.querySelectorAll("select").forEach(el => el.addEventListener("change", renderAll));
+    $("rMode").addEventListener("change", () => {
+      $("rPrincipalLabel").textContent = $("rMode").value === "annual" ? text[lang].annual : text[lang].initial;
+    });
+    $("dPreset").addEventListener("change", () => {
+      if ($("dPreset").value !== "custom") {
+        const [amount, freq] = $("dPreset").value.split(",");
+        $("dAmount").value = amount;
+        $("dFreq").value = freq;
+      }
+      renderAll();
+    });
+    $("langBtn").addEventListener("click", () => {
+      lang = lang === "zh" ? "en" : "zh";
+      applyLanguage();
+    });
+    window.addEventListener("resize", renderAll);
+    applyLanguage();
+  </script>
+</body>
+</html>

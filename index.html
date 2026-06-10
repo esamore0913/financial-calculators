@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>精準理財計算器套件 - 複利、IRR、通膨與延遲消費</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-6 px-4 shadow-md text-center">
+        <h1 class="text-2xl md:text-3xl font-bold tracking-wide">💡 精準理財決策計算器</h1>
+        <p class="text-blue-100 text-sm mt-2">看清資產的真實價值，拒絕憑感覺理財</p>
+    </header>
+
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 md:p-6">
+        
+        <div class="flex flex-wrap bg-white rounded-xl shadow-sm p-1 mb-6 border border-gray-100">
+            <button onclick="switchTab('tab-compound')" id="btn-tab-compound" class="tab-btn flex-1 min-w-[140px] py-3 text-center font-medium rounded-lg text-sm md:text-base transition-all duration-200 bg-blue-600 text-white">
+                💰 複利滾存資產
+            </button>
+            <button onclick="switchTab('tab-irr')" id="btn-tab-irr" class="tab-btn flex-1 min-w-[140px] py-3 text-center font-medium rounded-lg text-sm md:text-base transition-all duration-200 text-gray-600 hover:bg-gray-50">
+                📈 年化收益 (CAGR)
+            </button>
+            <button onclick="switchTab('tab-inflation')" id="btn-tab-inflation" class="tab-btn flex-1 min-w-[140px] py-3 text-center font-medium rounded-lg text-sm md:text-base transition-all duration-200 text-gray-600 hover:bg-gray-50">
+                💸 通膨購買力
+            </button>
+            <button onclick="switchTab('tab-delay')" id="btn-tab-delay" class="tab-btn flex-1 min-w-[140px] py-3 text-center font-medium rounded-lg text-sm md:text-base transition-all duration-200 text-gray-600 hover:bg-gray-50">
+                ☕ 延遲消費複利
+            </button>
+        </div>
+
+        <div id="tab-compound" class="tab-content active bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+            <h2 class="text-xl font-bold text-gray-900 mb-2">核心資產複利滾存計算器</h2>
+            <p class="text-gray-500 text-xs mb-6">設定你的單筆本金與定期定額，看看在時間的魔法下，資產能滾到多大。</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">單筆初始投入本金 ($)</label>
+                        <input type="number" id="comp-initial" value="100000" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">每月固定續投金額 ($)</label>
+                        <input type="number" id="comp-monthly" value="10000" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">預期年化報酬率 (%)</label>
+                        <input type="number" id="comp-roi" value="7" step="0.5" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">投資滾存年數</label>
+                        <input type="number" id="comp-years" value="20" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <button onclick="calculateCompound()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition-colors shadow-md mt-2">計算複利終值</button>
+                </div>
+                <div class="bg-indigo-50 rounded-xl p-6 flex flex-col justify-between border border-indigo-100">
+                    <div>
+                        <h3 class="text-sm font-semibold text-indigo-800 uppercase tracking-wider mb-4">複利資產預估</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <span class="text-xs text-gray-500 block">總投入本金</span>
+                                <span id="res-comp-saved" class="text-lg font-bold text-gray-900">$2,500,000</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 block">滾出來的純利息</span>
+                                <span id="res-comp-interest" class="text-lg font-bold text-indigo-600">$2,600,000</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-indigo-200/60">
+                        <span class="text-xs text-indigo-800 font-medium block mb-1">💰 屆時您擁有的資產總額：</span>
+                        <div id="res-comp-total" class="text-3xl font-black text-indigo-600">$5,100,000</div>
+                        <p class="text-xs text-gray-500 mt-2 leading-relaxed">這就是時間與複利的威力，利息甚至超越了你投入的本金！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-irr" class="tab-content bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+            <h2 class="text-xl font-bold text-gray-900 mb-2">實際年化複合增長率 (CAGR) 計算器</h2>
+            <p class="text-gray-500 text-xs mb-6">區分「單筆投資」與「定期定額」的真實報酬率，別被總投報率騙了。</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">投資模式</label>
+                        <select id="irr-mode" onchange="toggleIrrInput()" class="w-full border border-gray-300 rounded-lg p-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option value="single">單筆投入 (CAGR)</option>
+                            <option value="regular">定期定額 (約本 IRR)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label id="irr-principal-label" class="block text-sm font-medium text-gray-700 mb-1">初始投入金額 ($)</label>
+                        <input type="number" id="irr-principal" value="100000" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">最終資產現值 ($)</label>
+                        <input type="number" id="irr-final" value="150000" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">總投資年數</label>
+                        <input type="number" id="irr-years" value="3" step="0.1" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <button onclick="calculateIrr()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors shadow-md mt-2">開始計算真實收益</button>
+                </div>
+                <div class="bg-blue-50 rounded-xl p-6 flex flex-col justify-between border border-blue-100">
+                    <div>
+                        <h3 class="text-sm font-semibold text-blue-800 uppercase tracking-wider mb-4">計算結果</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <span class="text-xs text-gray-500 block">總投入本金</span>
+                                <span id="res-irr-cost" class="text-lg font-bold text-gray-900">$100,000</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 block">總投資報酬率</span>
+                                <span id="res-irr-total-rate" class="text-lg font-bold text-emerald-600">+50.00%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-blue-200/60">
+                        <span class="text-xs text-blue-700 font-medium block mb-1">🔑 您的真實年化收益率：</span>
+                        <div id="res-irr-annual" class="text-3xl font-black text-blue-600">14.47%</div>
+                        <p class="text-xs text-gray-500 mt-2 leading-relaxed">這意味著您的資金相當於每年以這個利率進行「複利滾存」。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-inflation" class="tab-content bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+            <h2 class="text-xl font-bold text-gray-900 mb-2">退休金購買力縮水計算器</h2>
+            <p class="text-gray-500 text-xs mb-6">現在的百萬資產，在通膨巨獸蠶食下，未來到底價值多少？（社群瘋傳爆款）</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">目前資產/退休金總額 ($)</label>
+                        <input type="number" id="inf-amount" value="1000000" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">預估年通貨膨脹率 (%)</label>
+                        <input type="number" id="inf-rate" value="3" step="0.1" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">多少年後使用？</label>
+                        <input type="number" id="inf-years" value="25" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+                    <button onclick="calculateInflation()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 rounded-lg transition-colors shadow-md mt-2">目睹資產縮水真相</button>
+                </div>
+                <div class="bg-amber-50 rounded-xl p-6 flex flex-col justify-between border border-amber-100">
+                    <div>
+                        <h3 class="text-sm font-semibold text-amber-800 uppercase tracking-wider mb-4">通膨殘酷真相</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <span class="text-xs text-gray-500 block">名義上您依然擁有</span>
+                                <span id="res-inf-nominal" class="text-lg font-bold text-gray-900">$1,000,000</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 block">實質購買力蒸發了</span>
+                                <span id="res-inf-loss-rate" class="text-lg font-bold text-rose-600">52.22%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-amber-200/60">
+                        <span class="text-xs text-amber-800 font-medium block mb-1">🛒 屆時的實質購買力僅相當於現在的：</span>
+                        <div id="res-inf-real" class="text-3xl font-black text-rose-600">$477,777</div>
+                        <p class="text-xs text-gray-600 mt-2 leading-relaxed font-medium">⚠️ 警訊：若不進行抗通膨投資，您的資產實質上正在緩慢歸零。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-delay" class="tab-content bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+            <h2 class="text-xl font-bold text-gray-900 mb-2">延遲消費 vs 複利終值計算器</h2>
+            <p class="text-gray-500 text-xs mb-6">少喝一杯手搖，少換一支iPhone，把錢拿去投大盤，幾年後會變成多少？</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">省下的消費類型</label>
+                        <select id="delay-preset" onchange="applyDelayPreset()" class="w-full border border-gray-300 rounded-lg p-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <option value="150_daily">每天一杯高檔咖啡/手搖 ($150/天)</option>
+                            <option value="3000_monthly">每月少買一件衣服/聚餐 ($3,000/月)</option>
+                            <option value="35000_yearly">每年換新手機的預算 ($35,000/年)</option>
+                            <option value="custom">自訂省下的金額</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">省下金額 ($)</label>
+                            <input type="number" id="delay-amount" value="150" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">頻率</label>
+                            <select id="delay-freq" class="w-full border border-gray-300 rounded-lg p-2.5 bg-gray-50 focus:ring-2 focus:ring-emerald-500 outline-none">
+                                <option value="365">每天</option>
+                                <option value="12">每月</option>
+                                <option value="1">每年</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">預期投資年化報酬率 (%)</label>
+                        <input type="number" id="delay-roi" value="8" step="0.5" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">持續堅持年數</label>
+                        <input type="number" id="delay-years" value="20" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <button onclick="calculateDelay()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded-lg transition-colors shadow-md mt-2">啟動時間財富魔法</button>
+                </div>
+                <div class="bg-emerald-50 rounded-xl p-6 flex flex-col justify-between border border-emerald-100">
+                    <div>
+                        <h3 class="text-sm font-semibold text-emerald-800 uppercase tracking-wider mb-4">複利帶來的驚人回報</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <span class="text-xs text-gray-500 block">你實際省下的本金總額</span>
+                                <span id="res-delay-saved" class="text-lg font-bold text-gray-900">$1,095,000</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500 block">時間與複利幫你多賺的利息</span>
+                                <span id="res-delay-interest" class="text-lg font-bold text-emerald-600">$1,617,143</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-emerald-200/60">
+                        <span class="text-xs text-emerald-800 font-medium block mb-1">💰 這筆原本會消失的消費，最終化為：</span>
+                        <div id="res-delay-total" class="text-3xl font-black text-emerald-600">$2,712,143</div>
+                        <p class="text-xs text-gray-500 mt-2 leading-relaxed">小錢滾大錢！這筆錢足以全額支付一份優質的長期老後規劃。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-6 text-center text-xs px-4">
+        <p>© 2026 精準理財計算器. 專為高淨值投資客與精明理財族打造.</p>
+        <p class="mt-1 text-gray-600">本站公式參考標準金融複利與 IRR 演算法，計算結果僅供理財規劃參考。</p>
+    </footer>
+
+    <script>
+        // --- Tab Switching ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // 重設所有按鈕樣式
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('text-gray-600', 'hover:bg-gray-50');
+            });
+            
+            // 啟用當前按鈕樣式
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            activeBtn.classList.remove('text-gray-600', 'hover:bg-gray-50');
+            activeBtn.classList.add('bg-blue-600', 'text-white');
+        }
+
+        // --- Helper: Format Number as Currency ---
+        function formatCurrency(num) {
+            return '$' + Math.round(num).toLocaleString('zh-TW');
+        }
+
+        // ==================== 新增 ✨ 計算器 1: 複利滾存邏輯 ====================
+        function calculateCompound() {
+            const initial = parseFloat(document.getElementById('comp-initial').value) || 0;
+            const monthly = parseFloat(document.getElementById('comp-monthly').value) || 0;
+            const roi = parseFloat(document.getElementById('comp-roi').value) || 0;
+            const years = parseFloat(document.getElementById('comp-years').value) || 0;
+
+            const r = roi / 100 / 12; // 月利率
+            const months = years * 12; // 總月數
+
+            let totalSaved = initial + (monthly * months);
+            let futureValue = initial * Math.pow(1 + (roi / 100), years); // 初始單筆複利
+
+            // 月投定期定額複利 (期末投入)
+            if (r > 0) {
+                futureValue += monthly * ((Math.pow(1 + r, months) - 1) / r);
+            } else {
+                futureValue += monthly * months;
+            }
+
+            let totalInterest = futureValue - totalSaved;
+
+            document.getElementById('res-comp-saved').innerText = formatCurrency(totalSaved);
+            document.getElementById('res-comp-interest').innerText = formatCurrency(totalInterest);
+            document.getElementById('res-comp-total').innerText = formatCurrency(futureValue);
+        }
+
+        // ==================== 計算器 2: IRR / CAGR 邏輯 ====================
+        function toggleIrrInput() {
+            const mode = document.getElementById('irr-mode').value;
+            const label = document.getElementById('irr-principal-label');
+            label.innerText = (mode === 'regular') ? "每期（年）定期定額投入金額 ($)" : "初始單筆投入金額 ($)";
+        }
+
+        function calculateIrr() {
+            const mode = document.getElementById('irr-mode').value;
+            const principal = parseFloat(document.getElementById('irr-principal').value) || 0;
+            const finalVal = parseFloat(document.getElementById('irr-final').value) || 0;
+            const years = parseFloat(document.getElementById('irr-years').value) || 1;
+
+            let totalCost = 0;
+            let annualRate = 0;
+
+            if (mode === 'single') {
+                totalCost = principal;
+                if (principal > 0 && finalVal > 0) {
+                    annualRate = Math.pow((finalVal / principal), (1 / years)) - 1;
+                }
+            } else {
+                const numPayments = Math.max(1, Math.round(years));
+                totalCost = principal * numPayments;
+                
+                let low = -0.99, high = 5.0, guess = 0.05;
+                for (let i = 0; i < 100; i++) {
+                    let fv = 0;
+                    for (let t = 0; t < numPayments; t++) {
+                        fv += principal * Math.pow(1 + guess, years - t);
+                    }
+                    if (Math.abs(fv - finalVal) < 0.01) break;
+                    (fv > finalVal) ? high = guess : low = guess;
+                    guess = (low + high) / 2;
+                }
+                annualRate = guess;
+            }
+
+            const totalRate = ((finalVal - totalCost) / totalCost) * 100;
+
+            document.getElementById('res-irr-cost').innerText = formatCurrency(totalCost);
+            document.getElementById('res-irr-total-rate').innerText = (totalRate >= 0 ? '+' : '') + totalRate.toFixed(2) + '%';
+            document.getElementById('res-irr-total-rate').className = totalRate < 0 ? "text-lg font-bold text-rose-600" : "text-lg font-bold text-emerald-600";
+            document.getElementById('res-irr-annual').innerText = (annualRate * 100).toFixed(2) + '%';
+        }
+
+        // ==================== 計算器 3: 通膨邏輯 ====================
+        function calculateInflation() {
+            const amount = parseFloat(document.getElementById('inf-amount').value) || 0;
+            const rate = parseFloat(document.getElementById('inf-rate').value) || 0;
+            const years = parseFloat(document.getElementById('inf-years').value) || 0;
+
+            const realValue = amount / Math.pow(1 + (rate / 100), years);
+            const lossRate = ((amount - realValue) / amount) * 100;
+
+            document.getElementById('res-inf-nominal').innerText = formatCurrency(amount);
+            document.getElementById('res-inf-loss-rate').innerText = lossRate.toFixed(2) + '%';
+            document.getElementById('res-inf-real').innerText = formatCurrency(realValue);
+        }
+
+        // ==================== 計算器 4: 延遲消費邏輯 ====================
+        function applyDelayPreset() {
+            const preset = document.getElementById('delay-preset').value;
+            const amountInput = document.getElementById('delay-amount');
+            const freqSelect = document.getElementById('delay-freq');
+
+            if (preset === '150_daily') { amountInput.value = 150; freqSelect.value = "365"; }
+            else if (preset === '3000_monthly') { amountInput.value = 3000; freqSelect.value = "12"; }
+            else if (preset === '35000_yearly') { amountInput.value = 35000; freqSelect.value = "1"; }
+        }
+
+        function calculateDelay() {
+            const amount = parseFloat(document.getElementById('delay-amount').value) || 0;
+            const freq = parseInt(document.getElementById('delay-freq').value) || 1;
+            const roi = parseFloat(document.getElementById('delay-roi').value) || 0;
+            const years = parseFloat(document.getElementById('delay-years').value) || 0;
+
+            const annualRate = roi / 100;
+            const annualContribution = amount * freq;
+            const totalSaved = annualContribution * years;
+            
+            let futureValue = (annualRate === 0) ? totalSaved : annualContribution * ((Math.pow(1 + annualRate, years) - 1) / annualRate);
+            const totalInterest = futureValue - totalSaved;
+
+            document.getElementById('res-delay-saved').innerText = formatCurrency(totalSaved);
+            document.getElementById('res-delay-interest').innerText = formatCurrency(totalInterest);
+            document.getElementById('res-delay-total').innerText = formatCurrency(futureValue);
+        }
+
+        // 頁面載入時初始化所有計算
+        window.onload = function() {
+            calculateCompound();
+            calculateIrr();
+            calculateInflation();
+            calculateDelay();
+        };
+    </script>
+</body>
+</html>

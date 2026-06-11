@@ -1,652 +1,800 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="google-adsense-account" content="ca-pub-5526769191135274">
+<meta name="google-adsense-account" content="ca-pub-5526769191135274">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5526769191135274"
      crossorigin="anonymous"></script>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Financial Decision Calculators | Compound Interest, CAGR, Inflation and Savings Planner</title>
-  <meta name="description" content="Free bilingual financial decision calculators for compound interest, CAGR, regular contribution returns, inflation purchasing power, and delayed spending goals.">
-  <meta name="keywords" content="financial calculator, compound interest calculator, CAGR calculator, IRR calculator, inflation calculator, savings goal calculator, retirement planning, investment planning, 财务计算器, 复利计算器, 年化收益率, 通胀计算器, 储蓄目标">
-  <meta name="description:zh-CN" content="免费中英文财务决策计算器，支持复利、CAGR、定投年化、通胀购买力和延迟消费目标规划。">
-  <meta name="keywords:zh-CN" content="财务计算器, 复利计算器, CAGR计算器, IRR计算器, 年化收益率, 通胀购买力, 储蓄目标, 退休规划, 投资规划">
-  <meta name="author" content="Financial Decision Calculators">
-  <meta name="robots" content="index, follow">
-  <meta name="language" content="English, Chinese">
-  <link rel="alternate" hreflang="en" href="./financial-calculators-improved.html">
-  <link rel="alternate" hreflang="zh-CN" href="./financial-calculators-improved.html?lang=zh">
-  <link rel="alternate" hreflang="x-default" href="./financial-calculators-improved.html">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Financial Decision Calculators">
-  <meta property="og:description" content="Plan wealth decisions with bilingual compound interest, CAGR, inflation, and delayed spending calculators.">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:locale:alternate" content="zh_CN">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Financial Decision Calculators">
-  <meta name="twitter:description" content="Bilingual financial calculators for compounding, true annualized return, inflation purchasing power, and savings goals.">
-  <style>
-    :root {
-      --bg: #f6f7fb;
-      --panel: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --line: #d9dee8;
-      --blue: #2563eb;
-      --green: #059669;
-      --amber: #d97706;
-      --red: #dc2626;
-      --shadow: 0 10px 28px rgba(31, 41, 55, .08);
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      color: var(--text);
-      background: var(--bg);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-    header {
-      color: #fff;
-      background: linear-gradient(120deg, #1d4ed8, #4338ca);
-      padding: 24px 18px;
-    }
-    .wrap { max-width: 1120px; margin: 0 auto; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    h1 { margin: 0; font-size: clamp(24px, 3vw, 34px); letter-spacing: 0; }
-    .subtitle { margin: 6px 0 0; color: #dbeafe; font-size: 14px; }
-    main { padding: 22px 18px 34px; }
-    button, select, input { font: inherit; }
-    .ghost {
-      border: 1px solid rgba(255,255,255,.45);
-      color: #fff;
-      background: rgba(255,255,255,.12);
-      border-radius: 8px;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-    .tabs {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 6px;
-      padding: 6px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
-    }
-    .tab {
-      min-height: 44px;
-      border: 0;
-      border-radius: 8px;
-      color: var(--muted);
-      background: transparent;
-      cursor: pointer;
-      font-weight: 700;
-    }
-    .tab.active { color: #fff; background: var(--blue); }
-    .panel {
-      display: none;
-      margin-top: 18px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      padding: 22px;
-    }
-    .panel.active { display: block; }
-    .panel h2 { margin: 0 0 6px; font-size: 22px; }
-    .hint { margin: 0 0 20px; color: var(--muted); font-size: 14px; }
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(240px, 320px) minmax(220px, 290px) 1fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-    .fields { display: grid; gap: 14px; }
-    label { display: block; margin-bottom: 6px; color: #374151; font-size: 13px; font-weight: 700; }
-    input, select {
-      width: 100%;
-      min-height: 42px;
-      border: 1px solid #cfd6e3;
-      border-radius: 8px;
-      background: #fff;
-      padding: 9px 10px;
-      color: var(--text);
-    }
-    input:focus, select:focus { outline: 3px solid rgba(37, 99, 235, .18); border-color: var(--blue); }
-    .results {
-      border-radius: 10px;
-      border: 1px solid #c7d2fe;
-      background: #eef2ff;
-      padding: 18px;
-      display: grid;
-      align-content: space-between;
-      gap: 14px;
-    }
-    .kicker { color: #475569; font-size: 12px; font-weight: 800; text-transform: uppercase; }
-    .metric { margin-top: 2px; font-size: 18px; font-weight: 800; overflow-wrap: anywhere; }
-    .metric.big { font-size: clamp(24px, 3vw, 34px); color: var(--blue); }
-    .metric.good { color: var(--green); }
-    .metric.bad { color: var(--red); }
-    .chartbox {
-      min-height: 300px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: #fbfcff;
-      padding: 12px;
-    }
-    canvas { width: 100%; height: 260px; display: block; }
-    .note {
-      margin-top: 18px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: #fbfcff;
-      padding: 14px;
-      color: #475569;
-      font-size: 14px;
-      line-height: 1.65;
-    }
-    .advice {
-      margin-top: 14px;
-      display: grid;
-      grid-template-columns: minmax(220px, 1fr) minmax(260px, 2fr);
-      gap: 14px;
-    }
-    .advice-card {
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: #fff;
-      padding: 14px;
-    }
-    .advice-title {
-      margin: 0 0 8px;
-      color: #111827;
-      font-size: 14px;
-      font-weight: 800;
-    }
-    .advice-text, .advice-list {
-      margin: 0;
-      color: #475569;
-      font-size: 14px;
-      line-height: 1.65;
-    }
-    .advice-list { padding-left: 20px; }
-    footer { padding: 18px; text-align: center; color: var(--muted); font-size: 12px; }
-    @media (max-width: 900px) {
-      .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .grid { grid-template-columns: 1fr; }
-      .topbar { align-items: flex-start; flex-direction: column; }
-      .advice { grid-template-columns: 1fr; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="meta-title">💡 Financial Decision Calculators - Precise Wealth Planning</title>
+
+    <!-- ==================== SEO & Social Share Tags (Default English) ==================== -->
+    <meta name="description" content="2026 Precise Financial Calculator Suite: Compound interest, CAGR/IRR, Inflation erosion, and Delayed gratification tools with dynamic charts and expert actionable insights.">
+    <meta name="keywords" content="Compound Interest Calculator, IRR Calculator, CAGR, Inflation Calculator, Retirement Planning, Financial Freedom">
+    <meta name="author" content="Financial Precision">
+
+    <!-- Open Graph (Facebook, LINE, Threads) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourusername.github.io/">
+    <meta property="og:title" content="💡 Financial Decision Calculators (with Dynamic Charts)">
+    <meta property="og:description" content="Stop guessing with your money. Calculate compound interest, inflation erosion, and real annualized returns instantly.">
+    <meta property="og:image" content="https://yourusername.github.io/images/share-cover.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="💡 Financial Decision Calculators">
+    <meta name="twitter:description" content="Calculate compound interest, inflation erosion, and real annualized returns instantly.">
+
+    <!-- Tailwind CSS & Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .chart-container { position: relative; height: 260px; width: 100%; }
+    </style>
 </head>
-<body>
-  <header>
-    <div class="wrap topbar">
-      <div>
-        <h1 data-i18n="title">财务决策计算器</h1>
-        <p class="subtitle" data-i18n="subtitle">复利、真实年化、通胀购买力和延迟消费的即时测算。</p>
-      </div>
-      <button class="ghost" id="langBtn" type="button">English</button>
-    </div>
-  </header>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
 
-  <main class="wrap">
-    <nav class="tabs" aria-label="Calculator tabs">
-      <button class="tab active" data-tab="compound" type="button" data-i18n="tabCompound">复利增长</button>
-      <button class="tab" data-tab="return" type="button" data-i18n="tabReturn">真实年化</button>
-      <button class="tab" data-tab="inflation" type="button" data-i18n="tabInflation">通胀侵蚀</button>
-      <button class="tab" data-tab="delay" type="button" data-i18n="tabDelay">延迟消费</button>
-    </nav>
-
-    <section class="panel active" id="compound">
-      <h2 data-i18n="compoundTitle">核心资产复利计算</h2>
-      <p class="hint" data-i18n="compoundHint">输入本金、月投入、收益率和年限，查看本金与收益如何随时间增长。</p>
-      <div class="grid">
-        <div class="fields">
-          <div><label data-i18n="initial">初始本金</label><input id="cInitial" type="number" min="0" step="100" value="100000"></div>
-          <div><label data-i18n="monthly">每月投入</label><input id="cMonthly" type="number" min="0" step="100" value="10000"></div>
-          <div><label data-i18n="returnRate">预期年化收益率 (%)</label><input id="cRate" type="number" step="0.1" value="7"></div>
-          <div><label data-i18n="years">年限</label><input id="cYears" type="number" min="1" max="60" step="1" value="20"></div>
-          <div><label data-i18n="timing">投入时间</label><select id="cTiming"><option value="end" data-i18n="endMonth">每月末</option><option value="start" data-i18n="startMonth">每月初</option></select></div>
+    <!-- Header & Language Switcher -->
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-6 px-4 shadow-md relative">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="text-center sm:text-left">
+                <h1 id="nav-title" class="text-2xl md:text-3xl font-bold tracking-wide">💡 Financial Decision Calculators</h1>
+                <p id="nav-subtitle" class="text-blue-100 text-sm mt-1">See the real value of your assets. Stop guessing with your money.</p>
+            </div>
+            <!-- Language Toggle Button -->
+            <button onclick="toggleLanguage()" class="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-medium py-1.5 px-4 rounded-full text-sm transition-all shadow-sm cursor-pointer flex items-center gap-1">
+                🌐 <span id="lang-btn-text">中文</span>
+            </button>
         </div>
-        <div class="results">
-          <div><div class="kicker" data-i18n="principal">累计本金</div><div class="metric" id="cCost">$0</div></div>
-          <div><div class="kicker" data-i18n="interest">累计收益</div><div class="metric good" id="cInterest">$0</div></div>
-          <div><div class="kicker" data-i18n="futureValue">未来资产</div><div class="metric big" id="cTotal">$0</div></div>
-        </div>
-        <div class="chartbox"><canvas id="cChart"></canvas></div>
-      </div>
-      <div class="note" data-i18n="compoundNote">改进点：支持月初/月末投入，避免把年限强制改成隐藏值，并且所有计算都经过输入校验。</div>
-      <div class="advice">
-        <div class="advice-card">
-          <h3 class="advice-title" data-i18n="compoundTargetTitle">Suggested target</h3>
-          <p class="advice-text" data-i18n="compoundTarget">Build a 12-month emergency reserve first, then invest monthly toward a 10-year core portfolio goal.</p>
-        </div>
-        <div class="advice-card">
-          <h3 class="advice-title" data-i18n="compoundStepsTitle">Improvement steps</h3>
-          <ol class="advice-list">
-            <li data-i18n="compoundStep1">Set a monthly contribution that can survive income changes.</li>
-            <li data-i18n="compoundStep2">Review the expected return every year instead of changing it after market noise.</li>
-            <li data-i18n="compoundStep3">Increase the contribution after every salary raise before lifestyle spending rises.</li>
-          </ol>
-        </div>
-      </div>
-    </section>
+    </header>
 
-    <section class="panel" id="return">
-      <h2 data-i18n="returnTitle">CAGR / 定投年化计算</h2>
-      <p class="hint" data-i18n="returnHint">区分一次性投入和周期投入，避免只看总收益率而误判表现。</p>
-      <div class="grid">
-        <div class="fields">
-          <div><label data-i18n="mode">投资模式</label><select id="rMode"><option value="single" data-i18n="single">一次性投入</option><option value="annual" data-i18n="annual">每年定投</option></select></div>
-          <div><label id="rPrincipalLabel" data-i18n="initial">初始本金</label><input id="rPrincipal" type="number" min="0" step="100" value="100000"></div>
-          <div><label data-i18n="finalValue">当前/最终资产</label><input id="rFinal" type="number" min="0" step="100" value="150000"></div>
-          <div><label data-i18n="years">年限</label><input id="rYears" type="number" min="0.1" step="0.1" value="3"></div>
+    <!-- Main Container -->
+    <main class="flex-grow max-w-5xl w-full mx-auto p-4 md:p-6">
+        
+        <!-- Tab Buttons -->
+        <div class="flex flex-wrap bg-white rounded-xl shadow-sm p-1 mb-6 border border-gray-100">
+            <button onclick="switchTab('tab-compound')" id="btn-tab-compound" class="tab-btn flex-1 min-w-[140px] py-3 text-center font-medium rounded-lg text-sm md:text-base transition-all duration-200 bg-blue-600 text-white">
+                💰 Compound Interest
+            </button>
+            <button onclick="switchTab('tab-irr')" id="btn-tab-irr" class="tab-btn flex-1 min-w-[140px] py-3 text-center font-medium rounded-lg text-sm md:text-base transition-all duration-200 text-gray-600 hover:bg-gray-50">
+                📈 Annualized Return (CAGR)
+            </button>
+            <button onclick="switchTab('tab-inflation')" id="btn-tab-inflation" class="tab-btn flex-1 min-w-[140px] py-3 text-center font-medium rounded-lg text-sm md:text-base transition-all duration-200 text-gray-600 hover:bg-gray-50">
+                💸 Inflation Erosion
+            </button>
+            <button onclick="switchTab('tab-delay')" id="btn-tab-delay" class="tab-btn flex-1 min-w-[140px] py-3 text-center font-medium rounded-lg text-sm md:text-base transition-all duration-200 text-gray-600 hover:bg-gray-50">
+                ☕ Delayed Gratification
+            </button>
         </div>
-        <div class="results">
-          <div><div class="kicker" data-i18n="principal">累计本金</div><div class="metric" id="rCost">$0</div></div>
-          <div><div class="kicker" data-i18n="totalReturn">总收益率</div><div class="metric" id="rTotalRate">0.00%</div></div>
-          <div><div class="kicker" data-i18n="annualReturn">真实年化</div><div class="metric big" id="rAnnual">0.00%</div></div>
+
+        <!-- ==================== Calculator 1: Compound Interest ==================== -->
+        <div id="tab-compound" class="tab-content active bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+            <h2 data-i18n="comp-h2" class="text-xl font-bold text-gray-900 mb-2">Core Asset Compound Interest Calculator</h2>
+            <p data-i18n="comp-p" class="text-gray-500 text-xs mb-6">Set your initial principal and monthly contributions to see how time multiplies your wealth.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label data-i18n="comp-lbl-init" class="block text-sm font-medium text-gray-700 mb-1">Initial Principal ($)</label>
+                        <input type="number" id="comp-initial" value="100000" oninput="calculateCompound()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label data-i18n="comp-lbl-month" class="block text-sm font-medium text-gray-700 mb-1">Monthly Contribution ($)</label>
+                        <input type="number" id="comp-monthly" value="10000" oninput="calculateCompound()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label data-i18n="comp-lbl-roi" class="block text-sm font-medium text-gray-700 mb-1">Expected Annual Return (%)</label>
+                        <input type="number" id="comp-roi" value="7" step="0.5" oninput="calculateCompound()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                    <div>
+                        <label data-i18n="comp-lbl-years" class="block text-sm font-medium text-gray-700 mb-1">Investment Period (Years)</label>
+                        <input type="number" id="comp-years" value="20" oninput="calculateCompound()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+                </div>
+                <div class="bg-indigo-50 rounded-xl p-5 flex flex-col justify-between border border-indigo-100">
+                    <div class="space-y-3">
+                        <h3 data-i18n="comp-res-title" class="text-xs font-semibold text-indigo-800 uppercase tracking-wider">Projection Results</h3>
+                        <div>
+                            <span data-i18n="lbl-total-principal" class="text-xs text-gray-500 block">Total Principal Invested</span>
+                            <span id="res-comp-saved" class="text-base font-bold text-gray-900">$0</span>
+                        </div>
+                        <div>
+                            <span data-i18n="lbl-total-interest" class="text-xs text-gray-500 block">Total Interest Earned</span>
+                            <span id="res-comp-interest" class="text-base font-bold text-indigo-600">$0</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-indigo-200/60">
+                        <span data-i18n="comp-res-final-lbl" class="text-xs text-indigo-800 font-medium block mb-1">💰 Your Future Estimated Asset:</span>
+                        <div id="res-comp-total" class="text-2xl font-black text-indigo-600">$0</div>
+                    </div>
+                </div>
+                <div class="border border-gray-100 rounded-xl p-3 flex flex-col justify-center bg-gray-50">
+                    <span data-i18n="chart-lbl-growth" class="text-xs font-semibold text-gray-500 mb-2 block text-center">Asset Growth Trend</span>
+                    <div class="chart-container">
+                        <canvas id="chart-compound"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Insights -->
+            <div id="insight-compound" class="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-200/60 text-sm leading-relaxed"></div>
         </div>
-        <div class="chartbox"><canvas id="rChart"></canvas></div>
-      </div>
-      <div class="note" data-i18n="returnNote">改进点：定投模式使用二分法求解收益率，并处理亏损、零本金、极端收益率等边界情况。</div>
-      <div class="advice">
-        <div class="advice-card">
-          <h3 class="advice-title" data-i18n="returnTargetTitle">Suggested target</h3>
-          <p class="advice-text" data-i18n="returnTarget">Keep long-term annualized return above your personal benchmark, such as inflation plus 3%.</p>
+
+        <!-- ==================== Calculator 2: IRR / CAGR ==================== -->
+        <div id="tab-irr" class="tab-content bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+            <h2 data-i18n="irr-h2" class="text-xl font-bold text-gray-900 mb-2">Real Annualized Return (CAGR/IRR) Calculator</h2>
+            <p data-i18n="irr-p" class="text-gray-500 text-xs mb-6">Differentiate between lump-sum and regular investments to uncover your true rate of return.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label data-i18n="irr-lbl-mode" class="block text-sm font-medium text-gray-700 mb-1">Investment Type</label>
+                        <select id="irr-mode" onchange="toggleIrrInput(); calculateIrr();" class="w-full border border-gray-300 rounded-lg p-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                            <option value="single">Lump-sum Investment (CAGR)</option>
+                            <option value="regular">Regular Contributions (IRR approximation)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label id="irr-principal-label" class="block text-sm font-medium text-gray-700 mb-1">Initial Principal Amount ($)</label>
+                        <input type="number" id="irr-principal" value="100000" oninput="calculateIrr()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label data-i18n="irr-lbl-final" class="block text-sm font-medium text-gray-700 mb-1">Current/Final Asset Value ($)</label>
+                        <input type="number" id="irr-final" value="150000" oninput="calculateIrr()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label data-i18n="irr-lbl-years" class="block text-sm font-medium text-gray-700 mb-1">Total Duration (Years)</label>
+                        <input type="number" id="irr-years" value="3" step="0.1" oninput="calculateIrr()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                </div>
+                <div class="bg-blue-50 rounded-xl p-5 flex flex-col justify-between border border-blue-100">
+                    <div class="space-y-3">
+                        <h3 data-i18n="irr-res-title" class="text-xs font-semibold text-blue-800 uppercase tracking-wider">Performance Summary</h3>
+                        <div>
+                            <span data-i18n="lbl-total-principal" class="text-xs text-gray-500 block">Total Principal Invested</span>
+                            <span id="res-irr-cost" class="text-base font-bold text-gray-900">$0</span>
+                        </div>
+                        <div>
+                            <span data-i18n="irr-res-total-rate-lbl" class="text-xs text-gray-500 block">Total Return Percentage</span>
+                            <span id="res-irr-total-rate" class="text-base font-bold text-emerald-600">+0.00%</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-blue-200/60">
+                        <span data-i18n="irr-res-final-lbl" class="text-xs text-blue-700 font-medium block mb-1">🔑 Your True Annualized Return:</span>
+                        <div id="res-irr-annual" class="text-2xl font-black text-blue-600">0.00%</div>
+                    </div>
+                </div>
+                <div class="border border-gray-100 rounded-xl p-3 flex flex-col justify-center bg-gray-50">
+                    <span data-i18n="chart-lbl-irr" class="text-xs font-semibold text-gray-500 mb-2 block text-center">Principal vs Earnings Breakdown</span>
+                    <div class="chart-container">
+                        <canvas id="chart-irr"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Insights -->
+            <div id="insight-irr" class="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-200/60 text-sm leading-relaxed"></div>
         </div>
-        <div class="advice-card">
-          <h3 class="advice-title" data-i18n="returnStepsTitle">Improvement steps</h3>
-          <ol class="advice-list">
-            <li data-i18n="returnStep1">Compare CAGR or contribution IRR against a broad market benchmark.</li>
-            <li data-i18n="returnStep2">Separate new cash contributions from investment gains before judging performance.</li>
-            <li data-i18n="returnStep3">Rebalance or simplify assets that lag the benchmark for several review periods.</li>
-          </ol>
+
+        <!-- ==================== Calculator 3: Inflation Erosion ==================== -->
+        <div id="tab-inflation" class="tab-content bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+            <h2 data-i18n="inf-h2" class="text-xl font-bold text-gray-900 mb-2">Retirement Fund Purchasing Power Erosion Calculator</h2>
+            <p data-i18n="inf-p" class="text-gray-500 text-xs mb-6">See how much your future cash worth under the relentless erosion of inflation.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label data-i18n="inf-lbl-amount" class="block text-sm font-medium text-gray-700 mb-1">Current Savings/Retirement Goal ($)</label>
+                        <input type="number" id="inf-amount" value="1000000" oninput="calculateInflation()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+                    <div>
+                        <label data-i18n="inf-lbl-rate" class="block text-sm font-medium text-gray-700 mb-1">Estimated Annual Inflation Rate (%)</label>
+                        <input type="number" id="inf-rate" value="3" step="0.1" oninput="calculateInflation()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+                    <div>
+                        <label data-i18n="inf-lbl-years" class="block text-sm font-medium text-gray-700 mb-1">Years Until Needed</label>
+                        <input type="number" id="inf-years" value="25" oninput="calculateInflation()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+                </div>
+                <div class="bg-amber-50 rounded-xl p-5 flex flex-col justify-between border border-amber-100">
+                    <div class="space-y-3">
+                        <h3 data-i18n="inf-res-title" class="text-xs font-semibold text-amber-800 uppercase tracking-wider">The Inflation Reality</h3>
+                        <div>
+                            <span data-i18n="inf-res-nominal-lbl" class="text-xs text-gray-500 block">Nominal Value Stays At</span>
+                            <span id="res-inf-nominal" class="text-base font-bold text-gray-900">$0</span>
+                        </div>
+                        <div>
+                            <span data-i18n="inf-res-loss-lbl" class="text-xs text-gray-500 block">Purchasing Power Vaporized By</span>
+                            <span id="res-inf-loss-rate" class="text-base font-bold text-rose-600">0.00%</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-amber-200/60">
+                        <span data-i18n="inf-res-final-lbl" class="text-xs text-amber-800 font-medium block mb-1">🛒 Real Purchasing Power Equivalent:</span>
+                        <div id="res-inf-real" class="text-2xl font-black text-rose-600">$0</div>
+                    </div>
+                </div>
+                <div class="border border-gray-100 rounded-xl p-3 flex flex-col justify-center bg-gray-50">
+                    <span data-i18n="chart-lbl-inf" class="text-xs font-semibold text-gray-500 mb-2 block text-center">Purchasing Power Decay Curve</span>
+                    <div class="chart-container">
+                        <canvas id="chart-inflation"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Insights -->
+            <div id="insight-inflation" class="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-200/60 text-sm leading-relaxed"></div>
         </div>
-      </div>
-    </section>
 
-    <section class="panel" id="inflation">
-      <h2 data-i18n="inflationTitle">通胀购买力计算</h2>
-      <p class="hint" data-i18n="inflationHint">查看未来现金折算到今天的购买力，以及要维持购买力需要准备多少名义金额。</p>
-      <div class="grid">
-        <div class="fields">
-          <div><label data-i18n="amount">当前金额</label><input id="iAmount" type="number" min="0" step="100" value="1000000"></div>
-          <div><label data-i18n="inflationRate">年通胀率 (%)</label><input id="iRate" type="number" step="0.1" value="3"></div>
-          <div><label data-i18n="years">年限</label><input id="iYears" type="number" min="1" max="60" step="1" value="25"></div>
+        <!-- ==================== Calculator 4: Delayed Gratification ==================== -->
+        <div id="tab-delay" class="tab-content bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+            <h2 data-i18n="delay-h2" class="text-xl font-bold text-gray-900 mb-2">Delayed Gratification vs Future Value Calculator</h2>
+            <p data-i18n="delay-p" class="text-gray-500 text-xs mb-6">Skip a daily coffee or an annual phone upgrade. Invest those small amounts instead.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label data-i18n="delay-lbl-preset" class="block text-sm font-medium text-gray-700 mb-1">Select Expense Type</label>
+                        <select id="delay-preset" onchange="applyDelayPreset(); calculateDelay();" class="w-full border border-gray-300 rounded-lg p-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <option value="150_daily">Skip Premium Coffee/Drinks ($150/Day)</option>
+                            <option value="3000_monthly">Skip Monthly Apparel/Dining Out ($3,000/Month)</option>
+                            <option value="35000_yearly">Skip Annual Flagship Phone Upgrade ($35,000/Year)</option>
+                            <option value="custom">Custom Savings Amount</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label data-i18n="delay-lbl-amount" class="block text-sm font-medium text-gray-700 mb-1">Amount ($)</label>
+                            <input type="number" id="delay-amount" value="150" oninput="calculateDelay()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label data-i18n="delay-lbl-freq" class="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
+                            <select id="delay-freq" onchange="calculateDelay()" class="w-full border border-gray-300 rounded-lg p-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                                <option value="365">Daily</option>
+                                <option value="12">Monthly</option>
+                                <option value="1">Yearly</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label data-i18n="delay-lbl-roi" class="block text-sm font-medium text-gray-700 mb-1">Expected Annual Return (%)</label>
+                        <input type="number" id="delay-roi" value="8" step="0.5" oninput="calculateDelay()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label data-i18n="delay-lbl-years" class="block text-sm font-medium text-gray-700 mb-1">Persistence Period (Years)</label>
+                        <input type="number" id="delay-years" value="20" oninput="calculateDelay()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                </div>
+                <div class="bg-emerald-50 rounded-xl p-5 flex flex-col justify-between border border-emerald-100">
+                    <div class="space-y-3">
+                        <h3 data-i18n="delay-res-title" class="text-xs font-semibold text-emerald-800 uppercase tracking-wider">Compound Rewards</h3>
+                        <div>
+                            <span data-i18n="delay-res-saved-lbl" class="text-xs text-gray-500 block">Total Saved Capital</span>
+                            <span id="res-delay-saved" class="text-base font-bold text-gray-900">$0</span>
+                        </div>
+                        <div>
+                            <span data-i18n="lbl-total-interest" class="text-xs text-gray-500 block">Total Interest Earned</span>
+                            <span id="res-delay-interest" class="text-base font-bold text-emerald-600">$0</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-emerald-200/60">
+                        <span data-i18n="delay-res-final-lbl" class="text-xs text-emerald-800 font-medium block mb-1">💰 These Small Savings Transform Into:</span>
+                        <div id="res-delay-total" class="text-2xl font-black text-emerald-600">$0</div>
+                    </div>
+                </div>
+                <div class="border border-gray-100 rounded-xl p-3 flex flex-col justify-center bg-gray-50">
+                    <span data-i18n="chart-lbl-delay" class="text-xs font-semibold text-gray-500 mb-2 block text-center">Principal vs Compound Growth</span>
+                    <div class="chart-container">
+                        <canvas id="chart-delay"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Insights -->
+            <div id="insight-delay" class="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-200/60 text-sm leading-relaxed"></div>
         </div>
-        <div class="results">
-          <div><div class="kicker" data-i18n="realPower">未来实际购买力</div><div class="metric" id="iReal">$0</div></div>
-          <div><div class="kicker" data-i18n="loss">购买力损失</div><div class="metric bad" id="iLoss">0.00%</div></div>
-          <div><div class="kicker" data-i18n="needed">等值未来金额</div><div class="metric big" id="iNeeded">$0</div></div>
-        </div>
-        <div class="chartbox"><canvas id="iChart"></canvas></div>
-      </div>
-      <div class="note" data-i18n="inflationNote">改进点：同时给出“缩水后的购买力”和“保持购买力所需的未来金额”，决策信息更完整。</div>
-      <div class="advice">
-        <div class="advice-card">
-          <h3 class="advice-title" data-i18n="inflationTargetTitle">Suggested target</h3>
-          <p class="advice-text" data-i18n="inflationTarget">Protect retirement or education goals so real purchasing power remains at least 80% of today's value.</p>
-        </div>
-        <div class="advice-card">
-          <h3 class="advice-title" data-i18n="inflationStepsTitle">Improvement steps</h3>
-          <ol class="advice-list">
-            <li data-i18n="inflationStep1">Use a conservative inflation rate for essential expenses.</li>
-            <li data-i18n="inflationStep2">Match long-term goals with assets that can reasonably outpace inflation.</li>
-            <li data-i18n="inflationStep3">Update the target amount yearly as prices and life plans change.</li>
-          </ol>
-        </div>
-      </div>
-    </section>
 
-    <section class="panel" id="delay">
-      <h2 data-i18n="delayTitle">延迟消费未来价值</h2>
-      <p class="hint" data-i18n="delayHint">把被省下来的消费转换成定期投资，估算长期复利结果。</p>
-      <div class="grid">
-        <div class="fields">
-          <div><label data-i18n="preset">消费类型</label><select id="dPreset"><option value="150,365" data-i18n="coffee">每天省 150</option><option value="3000,12" data-i18n="monthlyExpense">每月省 3000</option><option value="35000,1" data-i18n="phone">每年省 35000</option><option value="custom" data-i18n="custom">自定义</option></select></div>
-          <div><label data-i18n="amount">金额</label><input id="dAmount" type="number" min="0" step="10" value="150"></div>
-          <div><label data-i18n="frequency">频率</label><select id="dFreq"><option value="365" data-i18n="daily">每天</option><option value="12" data-i18n="monthlyFreq">每月</option><option value="1" data-i18n="yearly">每年</option></select></div>
-          <div><label data-i18n="returnRate">预期年化收益率 (%)</label><input id="dRate" type="number" step="0.1" value="8"></div>
-          <div><label data-i18n="years">年限</label><input id="dYears" type="number" min="1" max="60" step="1" value="20"></div>
-        </div>
-        <div class="results">
-          <div><div class="kicker" data-i18n="saved">累计省下本金</div><div class="metric" id="dSaved">$0</div></div>
-          <div><div class="kicker" data-i18n="interest">累计收益</div><div class="metric good" id="dInterest">$0</div></div>
-          <div><div class="kicker" data-i18n="futureValue">未来资产</div><div class="metric big" id="dTotal">$0</div></div>
-        </div>
-        <div class="chartbox"><canvas id="dChart"></canvas></div>
-      </div>
-      <div class="note" data-i18n="delayNote">改进点：预设和自定义输入分离，金额、频率、收益率、年限都可以独立调整。</div>
-      <div class="advice">
-        <div class="advice-card">
-          <h3 class="advice-title" data-i18n="delayTargetTitle">Suggested target</h3>
-          <p class="advice-text" data-i18n="delayTarget">Turn one avoidable recurring expense into an automatic investment habit for at least 12 months.</p>
-        </div>
-        <div class="advice-card">
-          <h3 class="advice-title" data-i18n="delayStepsTitle">Improvement steps</h3>
-          <ol class="advice-list">
-            <li data-i18n="delayStep1">Choose one expense that is easy to reduce without harming daily life.</li>
-            <li data-i18n="delayStep2">Create an automatic transfer for the same amount and frequency.</li>
-            <li data-i18n="delayStep3">Check progress monthly, then raise the saved amount when the habit feels stable.</li>
-          </ol>
-        </div>
-      </div>
-    </section>
-  </main>
+    </main>
 
-  <footer data-i18n="footer">计算结果仅用于学习和规划参考，不构成投资建议。</footer>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-6 text-center text-xs px-4">
+        <p>© 2026 Financial Decision Calculators. Tailored for Smart Investors.</p>
+        <p id="footer-disclaimer" class="mt-1 text-gray-600">Formulas are based on standard financial algorithms. Results are for educational purposes only.</p>
+    </footer>
 
-  <script>
-    const seo = {
-      en: {
-        title: "Financial Decision Calculators | Compound Interest, CAGR, Inflation and Savings Planner",
-        description: "Free bilingual financial decision calculators for compound interest, CAGR, regular contribution returns, inflation purchasing power, and delayed spending goals.",
-        keywords: "financial calculator, compound interest calculator, CAGR calculator, IRR calculator, inflation calculator, savings goal calculator, retirement planning, investment planning",
-        locale: "en_US"
-      },
-      zh: {
-        title: "财务决策计算器 | 复利、年化收益、通胀和储蓄目标规划",
-        description: "免费中英文财务决策计算器，支持复利、CAGR、定投年化、通胀购买力和延迟消费目标规划。",
-        keywords: "财务计算器, 复利计算器, CAGR计算器, IRR计算器, 年化收益率, 通胀购买力, 储蓄目标, 退休规划, 投资规划",
-        locale: "zh_CN"
-      }
-    };
+    <!-- ==================== Core JavaScript Logic ==================== -->
+    <script>
+        // --- 語系配置字典 (Dictionary) ---
+        let currentLang = 'en'; // 預設為英文版
 
-    const text = {
-      zh: {
-        title: "财务决策计算器", subtitle: "复利、真实年化、通胀购买力和延迟消费的即时测算。",
-        tabCompound: "复利增长", tabReturn: "真实年化", tabInflation: "通胀侵蚀", tabDelay: "延迟消费",
-        compoundTitle: "核心资产复利计算", compoundHint: "输入本金、月投入、收益率和年限，查看本金与收益如何随时间增长。",
-        returnTitle: "CAGR / 定投年化计算", returnHint: "区分一次性投入和周期投入，避免只看总收益率而误判表现。",
-        inflationTitle: "通胀购买力计算", inflationHint: "查看未来现金折算到今天的购买力，以及要维持购买力需要准备多少名义金额。",
-        delayTitle: "延迟消费未来价值", delayHint: "把被省下来的消费转换成定期投资，估算长期复利结果。",
-        initial: "初始本金", monthly: "每月投入", returnRate: "预期年化收益率 (%)", years: "年限", timing: "投入时间",
-        endMonth: "每月末", startMonth: "每月初", principal: "累计本金", interest: "累计收益", futureValue: "未来资产",
-        mode: "投资模式", single: "一次性投入", annual: "每年定投", finalValue: "当前/最终资产", totalReturn: "总收益率", annualReturn: "真实年化",
-        amount: "当前金额", inflationRate: "年通胀率 (%)", realPower: "未来实际购买力", loss: "购买力损失", needed: "等值未来金额",
-        preset: "消费类型", coffee: "每天省 150", monthlyExpense: "每月省 3000", phone: "每年省 35000", custom: "自定义",
-        frequency: "频率", daily: "每天", monthlyFreq: "每月", yearly: "每年", saved: "累计省下本金",
-        compoundNote: "改进点：支持月初/月末投入，避免把年限强制改成隐藏值，并且所有计算都经过输入校验。",
-        returnNote: "改进点：定投模式使用二分法求解收益率，并处理亏损、零本金、极端收益率等边界情况。",
-        inflationNote: "改进点：同时给出“缩水后的购买力”和“保持购买力所需的未来金额”，决策信息更完整。",
-        delayNote: "改进点：预设和自定义输入分离，金额、频率、收益率、年限都可以独立调整。",
-        compoundTargetTitle: "建议目标", compoundTarget: "先建立 12 个月紧急备用金，再把每月投入导向 10 年核心资产组合目标。",
-        compoundStepsTitle: "改善步骤", compoundStep1: "设定一个即使收入波动也能持续执行的月投入金额。", compoundStep2: "每年复核预期收益率，不因为短期市场噪音频繁修改。", compoundStep3: "每次加薪后先提高投入金额，再增加生活消费。",
-        returnTargetTitle: "建议目标", returnTarget: "让长期真实年化收益高于个人基准，例如通胀率加 3%。",
-        returnStepsTitle: "改善步骤", returnStep1: "把 CAGR 或定投 IRR 与宽基市场基准进行比较。", returnStep2: "判断表现前，先区分新增本金和真实投资收益。", returnStep3: "连续多个复盘周期落后基准的资产，应考虑再平衡或简化配置。",
-        inflationTargetTitle: "建议目标", inflationTarget: "让退休、教育等长期目标的真实购买力至少保持今天价值的 80%。",
-        inflationStepsTitle: "改善步骤", inflationStep1: "对必要支出使用偏保守的通胀率。", inflationStep2: "长期目标应匹配有机会跑赢通胀的资产。", inflationStep3: "随着价格和人生计划变化，每年更新目标金额。",
-        delayTargetTitle: "建议目标", delayTarget: "把一项可减少的周期性消费，转化为至少持续 12 个月的自动投资习惯。",
-        delayStepsTitle: "改善步骤", delayStep1: "选择一项容易减少、又不明显影响生活质量的消费。", delayStep2: "按同样金额和频率建立自动转账或自动投资。", delayStep3: "每月检查进度，习惯稳定后再提高储蓄金额。",
-        footer: "计算结果仅用于学习和规划参考，不构成投资建议。"
-      },
-      en: {
-        title: "Financial Decision Calculators", subtitle: "Instant projections for compounding, annualized returns, inflation, and delayed spending.",
-        tabCompound: "Compound Growth", tabReturn: "True Return", tabInflation: "Inflation", tabDelay: "Delayed Spending",
-        compoundTitle: "Core Asset Compound Calculator", compoundHint: "Enter principal, monthly contributions, return, and years to see how wealth compounds.",
-        returnTitle: "CAGR / Regular Contribution Return", returnHint: "Separate lump-sum investing from periodic contributions so total return does not mislead you.",
-        inflationTitle: "Inflation Purchasing Power Calculator", inflationHint: "See future cash in today's purchasing power and the nominal amount required to preserve it.",
-        delayTitle: "Delayed Spending Future Value", delayHint: "Turn avoided spending into regular investing and estimate the long-term result.",
-        initial: "Initial principal", monthly: "Monthly contribution", returnRate: "Expected annual return (%)", years: "Years", timing: "Contribution timing",
-        endMonth: "End of month", startMonth: "Start of month", principal: "Total principal", interest: "Total earnings", futureValue: "Future value",
-        mode: "Investment mode", single: "Lump sum", annual: "Annual contribution", finalValue: "Current/final value", totalReturn: "Total return", annualReturn: "Annualized return",
-        amount: "Current amount", inflationRate: "Annual inflation (%)", realPower: "Future real power", loss: "Purchasing power loss", needed: "Equivalent future amount",
-        preset: "Expense type", coffee: "Save 150 daily", monthlyExpense: "Save 3000 monthly", phone: "Save 35000 yearly", custom: "Custom",
-        frequency: "Frequency", daily: "Daily", monthlyFreq: "Monthly", yearly: "Yearly", saved: "Saved principal",
-        compoundNote: "Improvement: contribution timing is explicit, year inputs are validated, and calculations avoid hidden coercion.",
-        returnNote: "Improvement: regular contribution mode solves annual return by bisection and handles losses, zero principal, and extreme inputs.",
-        inflationNote: "Improvement: shows both reduced purchasing power and the future nominal amount needed to keep today's power.",
-        delayNote: "Improvement: presets and custom values are separated while amount, frequency, return, and years stay editable.",
-        compoundTargetTitle: "Suggested target", compoundTarget: "Build a 12-month emergency reserve first, then invest monthly toward a 10-year core portfolio goal.",
-        compoundStepsTitle: "Improvement steps", compoundStep1: "Set a monthly contribution that can survive income changes.", compoundStep2: "Review the expected return every year instead of changing it after market noise.", compoundStep3: "Increase the contribution after every salary raise before lifestyle spending rises.",
-        returnTargetTitle: "Suggested target", returnTarget: "Keep long-term annualized return above your personal benchmark, such as inflation plus 3%.",
-        returnStepsTitle: "Improvement steps", returnStep1: "Compare CAGR or contribution IRR against a broad market benchmark.", returnStep2: "Separate new cash contributions from investment gains before judging performance.", returnStep3: "Rebalance or simplify assets that lag the benchmark for several review periods.",
-        inflationTargetTitle: "Suggested target", inflationTarget: "Protect retirement or education goals so real purchasing power remains at least 80% of today's value.",
-        inflationStepsTitle: "Improvement steps", inflationStep1: "Use a conservative inflation rate for essential expenses.", inflationStep2: "Match long-term goals with assets that can reasonably outpace inflation.", inflationStep3: "Update the target amount yearly as prices and life plans change.",
-        delayTargetTitle: "Suggested target", delayTarget: "Turn one avoidable recurring expense into an automatic investment habit for at least 12 months.",
-        delayStepsTitle: "Improvement steps", delayStep1: "Choose one expense that is easy to reduce without harming daily life.", delayStep2: "Create an automatic transfer for the same amount and frequency.", delayStep3: "Check progress monthly, then raise the saved amount when the habit feels stable.",
-        footer: "Results are for education and planning only, not investment advice."
-      }
-    };
+        const i18n = {
+            en: {
+                "meta-title": "💡 Financial Decision Calculators - Precise Wealth Planning",
+                "nav-title": "💡 Financial Decision Calculators",
+                "nav-subtitle": "See the real value of your assets. Stop guessing with your money.",
+                "lang-btn-text": "中文",
+                "tab-comp": "💰 Compound Interest",
+                "tab-irr": "📈 Annualized Return (CAGR)",
+                "tab-inf": "💸 Inflation Erosion",
+                "tab-delay": "☕ Delayed Gratification",
+                
+                "comp-h2": "Core Asset Compound Interest Calculator",
+                "comp-p": "Set your initial principal and monthly contributions to see how time multiplies your wealth.",
+                "comp-lbl-init": "Initial Principal ($)",
+                "comp-lbl-month": "Monthly Contribution ($)",
+                "comp-lbl-roi": "Expected Annual Return (%)",
+                "comp-lbl-years": "Investment Period (Years)",
+                "comp-res-title": "Projection Results",
+                "comp-res-final-lbl": "💰 Your Future Estimated Asset:",
+                "lbl-total-principal": "Total Principal Invested",
+                "lbl-total-interest": "Total Interest Earned",
+                "chart-lbl-growth": "Asset Growth Trend",
+                "chart-dataset-principal": "Cumulative Principal",
+                "chart-dataset-total": "Total Compound Wealth",
+                "insight-comp-title": "💡 Compound Interest Guide:",
+                "insight-comp-p1": "Compound interest relies heavily on 'Time' and 'Capital'. To accelerate your goals:",
+                "insight-comp-li1": "Start Early: Starting just 5 years earlier can nearly double your final compound reward.",
+                "insight-comp-li2": "Build Core Assets: Allocate to broad-market index ETFs or automated robo-advisors with a proven long-term upward trend. Keep 'dividend reinvestment' turned on.",
 
-    let lang = new URLSearchParams(window.location.search).get("lang") === "zh" ? "zh" : "en";
-    const $ = id => document.getElementById(id);
-    const num = (id, fallback = 0) => {
-      const value = Number($(id).value);
-      return Number.isFinite(value) ? value : fallback;
-    };
-    const money = value => new Intl.NumberFormat(lang === "zh" ? "zh-CN" : "en-US", {
-      style: "currency", currency: "USD", maximumFractionDigits: 0
-    }).format(Number.isFinite(value) ? value : 0);
-    const pct = value => `${value >= 0 ? "+" : ""}${(value * 100).toFixed(2)}%`;
+                "irr-h2": "Real Annualized Return (CAGR/IRR) Calculator",
+                "irr-p": "Differentiate between lump-sum and regular investments to uncover your true rate of return.",
+                "irr-lbl-mode": "Investment Type",
+                "irr-lbl-final": "Current/Final Asset Value ($)",
+                "irr-lbl-years": "Total Duration (Years)",
+                "irr-res-title": "Performance Summary",
+                "irr-res-total-rate-lbl": "Total Return Percentage",
+                "irr-res-final-lbl": "🔑 Your True Annualized Return:",
+                "irr-mode-single": "Lump-sum Investment (CAGR)",
+                "irr-mode-regular": "Regular Contributions (IRR approximation)",
+                "irr-lbl-p-single": "Initial Principal Amount ($)",
+                "irr-lbl-p-regular": "Regular Contribution Amount ($/Year)",
+                "chart-lbl-irr": "Principal vs Earnings Breakdown",
+                "chart-dataset-earnings": "Net Return/Earnings",
+                "insight-irr-title": "🔑 Investment Audit Guide:",
+                "insight-irr-p1": "Don't fall for high 'total return' or complex marketing figures:",
+                "insight-irr-li1": "Audit regularly: Calculate the true IRR of your assets (insurance, individual stocks). If your long-term IRR underperforms a standard market index (e.g., < 4%), consider restructuring.",
+                "insight-irr-li2": "Aim for 6%-8%: Historical data demonstrates that regular diversified index investing yields a healthy compounding return in this range over the long run.",
 
-    function applyLanguage() {
-      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
-      updateSeo();
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.dataset.i18n;
-        if (text[lang][key]) el.textContent = text[lang][key];
-      });
-      $("langBtn").textContent = lang === "zh" ? "English" : "中文";
-      $("rPrincipalLabel").textContent = $("rMode").value === "annual" ? text[lang].annual : text[lang].initial;
-      renderAll();
-    }
+                "inf-h2": "Retirement Fund Purchasing Power Erosion Calculator",
+                "inf-p": "See how much your future cash worth under the relentless erosion of inflation.",
+                "inf-lbl-amount": "Current Savings/Retirement Goal ($)",
+                "inf-lbl-rate": "Estimated Annual Inflation Rate (%)",
+                "inf-lbl-years": "Years Until Needed",
+                "inf-res-title": "The Inflation Reality",
+                "inf-res-nominal-lbl": "Nominal Value Stays At",
+                "inf-res-loss-lbl": "Purchasing Power Vaporized By",
+                "inf-res-final-lbl": "🛒 Real Purchasing Power Equivalent:",
+                "chart-lbl-inf": "Purchasing Power Decay Curve",
+                "chart-dataset-power": "Real Purchasing Power",
+                "insight-inf-title": "⚠️ Inflation Shield Guide:",
+                "insight-inf-p1": "Your nominal cash balance doesn't drop, but its actual utility decays rapidly in banks:",
+                "insight-inf-li1": "Avoid pure cash hoards: Retirement planning cannot rely solely on standard low-yield accounts. Allocate at least 50% into inflation-resilient assets.",
+                "insight-inf-li2": "Top Choices: Equities with strong pricing power, prime real estate, or inflation-indexed bonds. Ensure asset growth beats inflation (> 3%).",
 
-    function setMeta(selector, value) {
-      const el = document.querySelector(selector);
-      if (el) el.setAttribute("content", value);
-    }
+                "delay-h2": "Delayed Gratification vs Future Value Calculator",
+                "delay-p": "Skip a daily coffee or an annual phone upgrade. Invest those small amounts instead.",
+                "delay-lbl-preset": "Select Expense Type",
+                "delay-lbl-amount": "Amount ($)",
+                "delay-lbl-freq": "Frequency",
+                "delay-lbl-roi": "Expected Annual Return (%)",
+                "delay-lbl-years": "Persistence Period (Years)",
+                "delay-res-title": "Compound Rewards",
+                "delay-res-saved-lbl": "Total Saved Capital",
+                "delay-res-final-lbl": "💰 These Small Savings Transform Into:",
+                "delay-opt1": "Skip Premium Coffee/Drinks ($150/Day)",
+                "delay-opt2": "Skip Monthly Apparel/Dining Out ($3,000/Month)",
+                "delay-opt3": "Skip Annual Flagship Phone Upgrade ($35,000/Year)",
+                "delay-opt4": "Custom Savings Amount",
+                "delay-freq-day": "Daily",
+                "delay-freq-month": "Monthly",
+                "delay-freq-year": "Yearly",
+                "chart-lbl-delay": "Principal vs Compound Growth",
+                "chart-dataset-saved": "Accumulated Capital Saved",
+                "chart-dataset-magic": "Compounded Interest Magic",
+                "insight-delay-title": "🚀 Frictionless Savings Guide:",
+                "insight-delay-p1": "Trimming lifestyle creep doesn't just save small coins; it buys your future autonomy:",
+                "insight-delay-li1": "Automation is Key: Set up automatic transfers on payday to isolate your 'saved' budget directly into an investment account.",
+                "insight-delay-li2": "Automated Indexing: Consistently stream these small fractions into broad indexes (e.g., VT, VOO). Keeping it out of sight ensures it evolves into a bulletproof fund.",
 
-    function updateSeo() {
-      const current = seo[lang];
-      document.title = current.title;
-      setMeta('meta[name="description"]', current.description);
-      setMeta('meta[name="keywords"]', current.keywords);
-      setMeta('meta[property="og:title"]', text[lang].title);
-      setMeta('meta[property="og:description"]', current.description);
-      setMeta('meta[property="og:locale"]', current.locale);
-      setMeta('meta[name="twitter:title"]', text[lang].title);
-      setMeta('meta[name="twitter:description"]', current.description);
-    }
+                "footer-disclaimer": "Formulas are based on standard financial algorithms. Results are for educational purposes only."
+            },
+            zh: {
+                "meta-title": "💡 精準理財決策計算器 - 算過才敢理財",
+                "nav-title": "💡 精準理財決策計算器",
+                "nav-subtitle": "看清資產的真實價值，拒絕憑感覺理財。",
+                "lang-btn-text": "English",
+                "tab-comp": "💰 複利滾存資產",
+                "tab-irr": "📈 年化收益 (CAGR)",
+                "tab-inf": "💸 通膨購買力",
+                "tab-delay": "☕ 延遲消費複利",
+                
+                "comp-h2": "核心資產複利滾存計算器",
+                "comp-p": "設定你的單筆本金與定期定額，看看在時間的魔法下，資產能滾到多大。",
+                "comp-lbl-init": "單筆初始投入本金 ($)",
+                "comp-lbl-month": "每月固定續投金額 ($)",
+                "comp-lbl-roi": "預期年化報酬率 (%)",
+                "comp-lbl-years": "投資滾存年數",
+                "comp-res-title": "複利資產預估",
+                "comp-res-final-lbl": "💰 屆時您擁有的資產總額：",
+                "lbl-total-principal": "總投入本金",
+                "lbl-total-interest": "滾出來的純利息",
+                "chart-lbl-growth": "資產增長走勢圖",
+                "chart-dataset-principal": "累積投入本金",
+                "chart-dataset-total": "複利資產總額",
+                "insight-comp-title": "💡 複利優化指南：",
+                "insight-comp-p1": "複利的效果取決於「時間」與「本金」。若想加速達成目標，建議：",
+                "insight-comp-li1": "儘早開始：提早 5 年投入，最終產出的複利增長可能相差近倍。",
+                "insight-comp-li2": "建構核心資產：選擇追蹤大盤、具備長期向上趨勢的工具（如市值型 ETF、高評級全球債券、或自動化智能投顧），並開啟「股息再投資」，讓利息自動滾入本金，才能發揮完整的雪球效應。",
 
-    function drawLine(canvas, series, labels) {
-      const ctx = canvas.getContext("2d");
-      const dpr = window.devicePixelRatio || 1;
-      const w = canvas.clientWidth * dpr, h = canvas.clientHeight * dpr;
-      canvas.width = w; canvas.height = h;
-      ctx.clearRect(0, 0, w, h);
-      const pad = 42 * dpr;
-      const all = series.flatMap(s => s.data);
-      const max = Math.max(1, ...all), min = Math.min(0, ...all);
-      ctx.strokeStyle = "#d9dee8"; ctx.lineWidth = dpr;
-      for (let i = 0; i <= 4; i++) {
-        const y = pad + (h - pad * 1.6) * i / 4;
-        ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - 12 * dpr, y); ctx.stroke();
-      }
-      series.forEach(s => {
-        ctx.strokeStyle = s.color; ctx.lineWidth = 3 * dpr; ctx.beginPath();
-        s.data.forEach((v, i) => {
-          const x = pad + (w - pad - 12 * dpr) * (i / Math.max(1, s.data.length - 1));
-          const y = h - pad - ((v - min) / (max - min || 1)) * (h - pad * 1.8);
-          i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-        });
-        ctx.stroke();
-      });
-      ctx.fillStyle = "#6b7280"; ctx.font = `${12 * dpr}px sans-serif`;
-      ctx.fillText(money(max), 8 * dpr, pad);
-      ctx.fillText(labels[labels.length - 1] || "", pad, h - 10 * dpr);
-    }
+                "irr-h2": "實際年化複合增長率 (CAGR/IRR) 計算器",
+                "irr-p": "區分「單筆投資」與「定期定額」的真實報酬率，別被總投報率騙了。",
+                "irr-lbl-mode": "投資模式",
+                "irr-lbl-final": "最終資產現值 ($)",
+                "irr-lbl-years": "總投資年數",
+                "irr-res-title": "計算結果摘要",
+                "irr-res-total-rate-lbl": "總投資報酬率",
+                "irr-res-final-lbl": "🔑 您的真實年化收益率：",
+                "irr-mode-single": "單筆投入 (CAGR)",
+                "irr-mode-regular": "定期定額 (約本 IRR)",
+                "irr-lbl-p-single": "初始單筆投入金額 ($)",
+                "irr-lbl-p-regular": "每期（年）定期定額投入金額 ($)",
+                "chart-lbl-irr": "本金與最終價值對比",
+                "chart-dataset-earnings": "賺取淨回報",
+                "insight-irr-title": "🔑 投資體檢指南：",
+                "insight-irr-p1": "別被理財商品包裝的「總報酬率」或「宣告利率」給騙了！",
+                "insight-irr-li1": "定期汰弱留強：算出你手頭上各項資產（儲蓄險、個股、基金）的真實 IRR。若長期年化收益率低於 4%（未能顯著跑贏通膨與大盤），應果斷調整配置。",
+                "insight-irr-li2": "追求穩健 6%-8%：歷史數據顯示，透過長期定期定額全球分散風險，獲取年化 6%~8% 的複合增長是相對可行且健康的目標。",
 
-    function drawBars(canvas, principal, gains) {
-      const ctx = canvas.getContext("2d");
-      const dpr = window.devicePixelRatio || 1;
-      const w = canvas.clientWidth * dpr, h = canvas.clientHeight * dpr;
-      canvas.width = w; canvas.height = h;
-      ctx.clearRect(0, 0, w, h);
-      const pad = 38 * dpr, gap = 3 * dpr;
-      const count = principal.length, max = Math.max(1, ...principal.map((v, i) => v + gains[i]));
-      const bw = Math.max(2 * dpr, (w - pad - 18 * dpr) / count - gap);
-      for (let i = 0; i < count; i++) {
-        const x = pad + i * (bw + gap);
-        const ph = principal[i] / max * (h - pad * 1.8);
-        const gh = gains[i] / max * (h - pad * 1.8);
-        ctx.fillStyle = "#a7f3d0"; ctx.fillRect(x, h - pad - ph, bw, ph);
-        ctx.fillStyle = "#059669"; ctx.fillRect(x, h - pad - ph - gh, bw, gh);
-      }
-      ctx.fillStyle = "#6b7280"; ctx.font = `${12 * dpr}px sans-serif`;
-      ctx.fillText(money(max), 8 * dpr, pad);
-    }
+                "inf-h2": "退休金購買力縮水計算器",
+                "inf-p": "現在的百萬資產，在通膨巨獸蠶食下，未來到底價值多少？",
+                "inf-lbl-amount": "目前資產/退休金總額 ($)",
+                "inf-lbl-rate": "預估年通貨膨脹率 (%)",
+                "inf-lbl-years": "多少年後使用？",
+                "inf-res-title": "通膨殘酷真相",
+                "inf-res-nominal-lbl": "名義上您依然擁有",
+                "inf-res-loss-lbl": "實質購買力蒸發了",
+                "inf-res-final-lbl": "🛒 實質購買力僅相當於現在的：",
+                "chart-lbl-inf": "購買力縮水曲線",
+                "chart-dataset-power": "實質購買力(考慮通膨)",
+                "insight-inf-title": "⚠️ 抗通膨防禦指南：",
+                "insight-inf-p1": "數字沒有變少，但錢確實變小了。把現金死存在銀行，實質上是在縮水。",
+                "insight-inf-li1": "拒絕純現金養老：退休規劃不能只靠定存。必須將至少 50% 以上的閒置資產配置在「抗通膨資產」中。",
+                "insight-inf-li2": "首選配置：房地產、具有定價權的頂級企業股票（如具有競爭力的科技龍頭）、或是與通膨掛鉤的債券。讓資產帳面增速大於通膨率，才能保住真實購買力。",
 
-    function drawPie(canvas, cost, profit) {
-      const ctx = canvas.getContext("2d");
-      const dpr = window.devicePixelRatio || 1;
-      const w = canvas.clientWidth * dpr, h = canvas.clientHeight * dpr;
-      canvas.width = w; canvas.height = h;
-      ctx.clearRect(0, 0, w, h);
-      const total = Math.max(1, cost + Math.max(0, profit));
-      const r = Math.min(w, h) * .32, cx = w * .5, cy = h * .48;
-      let start = -Math.PI / 2;
-      [[cost, "#2563eb"], [Math.max(0, profit), "#059669"]].forEach(part => {
-        const end = start + Math.PI * 2 * part[0] / total;
-        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, start, end); ctx.closePath();
-        ctx.fillStyle = part[1]; ctx.fill(); start = end;
-      });
-      ctx.fillStyle = "#374151"; ctx.font = `${13 * dpr}px sans-serif`;
-      ctx.fillText(`${text[lang].principal}: ${money(cost)}`, 18 * dpr, h - 38 * dpr);
-      ctx.fillText(`${text[lang].interest}: ${money(profit)}`, 18 * dpr, h - 18 * dpr);
-    }
+                "delay-h2": "延遲消費 vs 複利終值計算器",
+                "delay-p": "少喝一罐手搖、少換一支新手機，把小錢投進大盤，能滾出多少錢？",
+                "delay-lbl-preset": "省下的消費類型",
+                "delay-lbl-amount": "省下金額 ($)",
+                "delay-lbl-freq": "頻率",
+                "delay-lbl-roi": "預期投資年化報酬率 (%)",
+                "delay-lbl-years": "持續堅持年數",
+                "delay-res-title": "複利驚人回報",
+                "delay-res-saved-lbl": "你實際省下的本金總額",
+                "delay-res-final-lbl": "💰 這筆省下的消費，最終化為：",
+                "delay-opt1": "每天一杯高檔咖啡/手搖 ($150/天)",
+                "delay-opt2": "每月少買一件衣服/聚餐 ($3,000/月)",
+                "delay-opt3": "每年換新手機的預算 ($35,000/年)",
+                "delay-opt4": "自訂省下的金額",
+                "delay-freq-day": "每天",
+                "delay-freq-month": "每月",
+                "delay-freq-year": "每年",
+                "chart-lbl-delay": "本金與複利增長對比",
+                "chart-dataset-saved": "省下的累積本金",
+                "chart-dataset-magic": "滾出來的利息魔法",
+                "insight-delay-title": "🚀 無痛儲蓄指南：",
+                "insight-delay-p1": "戒掉「精緻窮」的消費習慣，你省下的不值是本金，而是未來的財務自由度。",
+                "insight-delay-li1": "分帳戶管理：每月發薪日立刻將「想省下的消費預算」（如手搖、娛樂費）透過自動扣款，直接打入獨立的證券戶。",
+                "insight-delay-li2": "自動化定投：設定每月自動購買一籃子大盤資產。只要讓這筆錢遠離你的生活帳戶，時間久了，它自己就會長成一筆巨大的財富。",
 
-    function years(id) { return Math.min(60, Math.max(1, Math.round(num(id, 1)))); }
+                "footer-disclaimer": "本站公式參考標準金融複利與 IRR 演算法，計算結果僅供理財規劃參考。"
+            }
+        };
 
-    function calcCompound() {
-      const initial = Math.max(0, num("cInitial"));
-      const monthly = Math.max(0, num("cMonthly"));
-      const rate = num("cRate") / 100 / 12;
-      const y = years("cYears");
-      const start = $("cTiming").value === "start";
-      let total = initial, cost = initial, labels = ["0"], costs = [cost], totals = [total];
-      for (let year = 1; year <= y; year++) {
-        for (let m = 0; m < 12; m++) {
-          if (start) { total += monthly; cost += monthly; total *= 1 + rate; }
-          else { total *= 1 + rate; total += monthly; cost += monthly; }
+        // --- 全域圖表執行個體物件 ---
+        let charts = {};
+
+        // --- 語系無縫切換機制 ---
+        function toggleLanguage() {
+            currentLang = (currentLang === 'en') ? 'zh' : 'en';
+            applyLanguage();
+            // 切換語言後，立即重繪當下所有圖表，確保圖例語系同步
+            calculateCompound();
+            calculateIrr();
+            calculateInflation();
+            calculateDelay();
         }
-        labels.push(String(year)); costs.push(cost); totals.push(total);
-      }
-      $("cCost").textContent = money(cost);
-      $("cInterest").textContent = money(total - cost);
-      $("cTotal").textContent = money(total);
-      drawLine($("cChart"), [{ data: costs, color: "#94a3b8" }, { data: totals, color: "#2563eb" }], labels);
-    }
 
-    function solveAnnualContributionRate(payment, yearsCount, finalValue) {
-      if (payment <= 0 || yearsCount <= 0) return 0;
-      let low = -0.95, high = 5;
-      for (let i = 0; i < 120; i++) {
-        const mid = (low + high) / 2;
-        let fv = 0;
-        for (let t = 1; t <= yearsCount; t++) fv = (fv + payment) * (1 + mid);
-        if (fv > finalValue) high = mid; else low = mid;
-      }
-      return (low + high) / 2;
-    }
+        function applyLanguage() {
+            const dict = i18n[currentLang];
+            document.documentElement.lang = currentLang;
 
-    function calcReturn() {
-      const mode = $("rMode").value;
-      const principal = Math.max(0, num("rPrincipal"));
-      const finalValue = Math.max(0, num("rFinal"));
-      const y = Math.max(.1, num("rYears", 1));
-      const fullYears = Math.max(1, Math.round(y));
-      let cost, annual;
-      if (mode === "single") {
-        cost = principal;
-        annual = principal > 0 && finalValue > 0 ? Math.pow(finalValue / principal, 1 / y) - 1 : 0;
-      } else {
-        cost = principal * fullYears;
-        annual = solveAnnualContributionRate(principal, fullYears, finalValue);
-      }
-      const totalRate = cost > 0 ? (finalValue - cost) / cost : 0;
-      $("rCost").textContent = money(cost);
-      $("rTotalRate").textContent = pct(totalRate);
-      $("rTotalRate").className = `metric ${totalRate < 0 ? "bad" : "good"}`;
-      $("rAnnual").textContent = pct(annual);
-      $("rAnnual").className = `metric big ${annual < 0 ? "bad" : ""}`;
-      drawPie($("rChart"), cost, finalValue - cost);
-    }
+            // 1. 靜態文字直接替換
+            document.getElementById('meta-title').innerText = dict["meta-title"];
+            document.getElementById('nav-title').innerText = dict["nav-title"];
+            document.getElementById('nav-subtitle').innerText = dict["nav-subtitle"];
+            document.getElementById('lang-btn-text').innerText = dict["lang-btn-text"];
+            document.getElementById('footer-disclaimer').innerText = dict["footer-disclaimer"];
 
-    function calcInflation() {
-      const amount = Math.max(0, num("iAmount"));
-      const rate = num("iRate") / 100;
-      const y = years("iYears");
-      const real = amount / Math.pow(1 + rate, y);
-      const needed = amount * Math.pow(1 + rate, y);
-      const loss = amount > 0 ? (amount - real) / amount : 0;
-      const data = [], labels = [];
-      for (let year = 0; year <= y; year++) {
-        data.push(amount / Math.pow(1 + rate, year)); labels.push(String(year));
-      }
-      $("iReal").textContent = money(real);
-      $("iLoss").textContent = `${(loss * 100).toFixed(2)}%`;
-      $("iNeeded").textContent = money(needed);
-      drawLine($("iChart"), [{ data, color: "#d97706" }], labels);
-    }
+            // 導覽切換按鈕文字
+            document.getElementById('btn-tab-compound').innerText = dict["tab-comp"];
+            document.getElementById('btn-tab-irr').innerText = dict["tab-irr"];
+            document.getElementById('btn-tab-inflation').innerText = dict["tab-inf"];
+            document.getElementById('btn-tab-delay').innerText = dict["tab-delay"];
 
-    function calcDelay() {
-      const amount = Math.max(0, num("dAmount"));
-      const freq = Math.max(1, num("dFreq", 1));
-      const rate = num("dRate") / 100;
-      const y = years("dYears");
-      const annual = amount * freq;
-      const saved = [], gain = [];
-      let value = 0;
-      for (let year = 1; year <= y; year++) {
-        value = (value + annual) * (1 + rate);
-        const cost = annual * year;
-        saved.push(cost); gain.push(Math.max(0, value - cost));
-      }
-      const totalSaved = annual * y;
-      $("dSaved").textContent = money(totalSaved);
-      $("dInterest").textContent = money(value - totalSaved);
-      $("dTotal").textContent = money(value);
-      drawBars($("dChart"), saved, gain);
-    }
+            // 2. 透過 data-i18n 屬性自動配對標籤
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.innerText = dict[key];
+            });
 
-    function renderAll() {
-      calcCompound();
-      calcReturn();
-      calcInflation();
-      calcDelay();
-    }
+            // 3. 下拉選單選項目錄替換
+            const delayPreset = document.getElementById('delay-preset');
+            delayPreset.options[0].text = dict["delay-opt1"];
+            delayPreset.options[1].text = dict["delay-opt2"];
+            delayPreset.options[2].text = dict["delay-opt3"];
+            delayPreset.options[3].text = dict["delay-opt4"];
 
-    document.querySelectorAll(".tab").forEach(button => {
-      button.addEventListener("click", () => {
-        document.querySelectorAll(".tab,.panel").forEach(el => el.classList.remove("active"));
-        button.classList.add("active");
-        $(button.dataset.tab).classList.add("active");
-        renderAll();
-      });
-    });
-    document.querySelectorAll("input,select").forEach(el => el.addEventListener("input", renderAll));
-    document.querySelectorAll("select").forEach(el => el.addEventListener("change", renderAll));
-    $("rMode").addEventListener("change", () => {
-      $("rPrincipalLabel").textContent = $("rMode").value === "annual" ? text[lang].annual : text[lang].initial;
-    });
-    $("dPreset").addEventListener("change", () => {
-      if ($("dPreset").value !== "custom") {
-        const [amount, freq] = $("dPreset").value.split(",");
-        $("dAmount").value = amount;
-        $("dFreq").value = freq;
-      }
-      renderAll();
-    });
-    $("langBtn").addEventListener("click", () => {
-      lang = lang === "zh" ? "en" : "zh";
-      applyLanguage();
-    });
-    window.addEventListener("resize", renderAll);
-    applyLanguage();
-  </script>
+            const delayFreq = document.getElementById('delay-freq');
+            delayFreq.options[0].text = dict["delay-freq-day"];
+            delayFreq.options[1].text = dict["delay-freq-month"];
+            delayFreq.options[2].text = dict["delay-freq-year"];
+
+            const irrMode = document.getElementById('irr-mode');
+            irrMode.options[0].text = dict["irr-mode-single"];
+            irrMode.options[1].text = dict["irr-mode-regular"];
+
+            // 4. 動態組合專家建議區塊的 HTML (注入核心 CSS 樣式)
+            document.getElementById('insight-compound').innerHTML = `
+                <h4 class="font-bold text-indigo-900 flex items-center gap-1 mb-2">${dict["insight-comp-title"]}</h4>
+                <p class="text-gray-600 mb-1">${dict["insight-comp-p1"]}</p>
+                <ul class="list-decimal list-inside text-gray-600 space-y-1 pl-1">
+                    <li>${dict["insight-comp-li1"]}</li>
+                    <li>${dict["insight-comp-li2"]}</li>
+                </ul>`;
+
+            document.getElementById('insight-irr').innerHTML = `
+                <h4 class="font-bold text-blue-900 flex items-center gap-1 mb-2">${dict["insight-irr-title"]}</h4>
+                <p class="text-gray-600 mb-1">${dict["insight-irr-p1"]}</p>
+                <ul class="list-decimal list-inside text-gray-600 space-y-1 pl-1">
+                    <li>${dict["insight-irr-li1"]}</li>
+                    <li>${dict["insight-irr-li2"]}</li>
+                </ul>`;
+
+            document.getElementById('insight-inflation').innerHTML = `
+                <h4 class="font-bold text-amber-900 flex items-center gap-1 mb-2">${dict["insight-inf-title"]}</h4>
+                <p class="text-gray-600 mb-1">${dict["insight-inf-p1"]}</p>
+                <ul class="list-decimal list-inside text-gray-600 space-y-1 pl-1">
+                    <li>${dict["insight-inf-li1"]}</li>
+                    <li>${dict["insight-inf-li2"]}</li>
+                </ul>`;
+
+            document.getElementById('insight-delay').innerHTML = `
+                <h4 class="font-bold text-emerald-900 flex items-center gap-1 mb-2">${dict["insight-delay-title"]}</h4>
+                <p class="text-gray-600 mb-1">${dict["insight-delay-p1"]}</p>
+                <ul class="list-decimal list-inside text-gray-600 space-y-1 pl-1">
+                    <li>${dict["insight-delay-li1"]}</li>
+                    <li>${dict["insight-delay-li2"]}</li>
+                </ul>`;
+        }
+
+        // --- Tab 切換常規邏輯 ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('text-gray-600', 'hover:bg-gray-50');
+            });
+            
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            activeBtn.classList.remove('text-gray-600', 'hover:bg-gray-50');
+            activeBtn.classList.add('bg-blue-600', 'text-white');
+        }
+
+        function formatCurrency(num) {
+            return '$' + Math.round(num).toLocaleString(currentLang === 'zh' ? 'zh-TW' : 'en-US');
+        }
+
+        function updateChart(chartId, type, data, options) {
+            if (charts[chartId]) {
+                charts[chartId].destroy();
+            }
+            const ctx = document.getElementById(chartId).getContext('2d');
+            charts[chartId] = new Chart(ctx, { type, data, options });
+        }
+
+        // ==================== 計算器 1: 複利滾存 ====================
+        function calculateCompound() {
+            const initial = parseFloat(document.getElementById('comp-initial').value) || 0;
+            const monthly = parseFloat(document.getElementById('comp-monthly').value) || 0;
+            const roi = parseFloat(document.getElementById('comp-roi').value) || 0;
+            const years = Math.max(1, Math.min(50, parseInt(document.getElementById('comp-years').value) || 0));
+
+            const r = roi / 100 / 12;
+            let labels = [], dataPrincipal = [], dataTotal = [];
+            let currentTotal = initial;
+            let currentCost = initial;
+
+            labels.push(currentLang === 'zh' ? "起始" : "Start");
+            dataPrincipal.push(currentCost);
+            dataTotal.push(currentTotal);
+
+            for (let y = 1; y <= years; y++) {
+                for (let m = 0; m < 12; m++) {
+                    currentTotal = currentTotal * (1 + r) + monthly;
+                    currentCost += monthly;
+                }
+                labels.push(currentLang === 'zh' ? `第 ${y} 年` : `Year ${y}`);
+                dataPrincipal.push(currentCost);
+                dataTotal.push(currentTotal);
+            }
+
+            document.getElementById('res-comp-saved').innerText = formatCurrency(currentCost);
+            document.getElementById('res-comp-interest').innerText = formatCurrency(currentTotal - currentCost);
+            document.getElementById('res-comp-total').innerText = formatCurrency(currentTotal);
+
+            updateChart('chart-compound', 'line', {
+                labels: labels,
+                datasets: [
+                    { label: i18n[currentLang]["chart-dataset-principal"], data: dataPrincipal, borderColor: '#9ca3af', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2 },
+                    { label: i18n[currentLang]["chart-dataset-total"], data: dataTotal, borderColor: '#4f46e5', backgroundColor: 'rgba(79, 70, 229, 0.1)', fill: true, borderWidth: 3, pointRadius: 3 }
+                ]
+            }, { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { callback: v => '$' + v.toLocaleString() } } } });
+        }
+
+        // ==================== 計算器 2: IRR / CAGR ====================
+        function toggleIrrInput() {
+            const mode = document.getElementById('irr-mode').value;
+            const label = document.getElementById('irr-principal-label');
+            label.innerText = i18n[currentLang][mode === 'regular' ? "irr-lbl-p-regular" : "irr-lbl-p-single"];
+        }
+
+        function calculateIrr() {
+            const mode = document.getElementById('irr-mode').value;
+            const principal = parseFloat(document.getElementById('irr-principal').value) || 0;
+            const finalVal = parseFloat(document.getElementById('irr-final').value) || 0;
+            const years = parseFloat(document.getElementById('irr-years').value) || 1;
+
+            let totalCost = 0;
+            let annualRate = 0;
+
+            if (mode === 'single') {
+                totalCost = principal;
+                if (principal > 0 && finalVal > 0) {
+                    annualRate = Math.pow((finalVal / principal), (1 / years)) - 1;
+                }
+            } else {
+                const numPayments = Math.max(1, Math.round(years));
+                totalCost = principal * numPayments;
+                
+                let low = -0.99, high = 5.0, guess = 0.05;
+                for (let i = 0; i < 100; i++) {
+                    let fv = 0;
+                    for (let t = 0; t < numPayments; t++) {
+                        fv += principal * Math.pow(1 + guess, years - t);
+                    }
+                    if (Math.abs(fv - finalVal) < 0.01) break;
+                    (fv > finalVal) ? high = guess : low = guess;
+                    guess = (low + high) / 2;
+                }
+                annualRate = guess;
+            }
+
+            const totalRate = totalCost > 0 ? ((finalVal - totalCost) / totalCost) * 100 : 0;
+
+            document.getElementById('res-irr-cost').innerText = formatCurrency(totalCost);
+            document.getElementById('res-irr-total-rate').innerText = (totalRate >= 0 ? '+' : '') + totalRate.toFixed(2) + '%';
+            document.getElementById('res-irr-total-rate').className = totalRate < 0 ? "text-lg font-bold text-rose-600" : "text-lg font-bold text-emerald-600";
+            document.getElementById('res-irr-annual').innerText = (annualRate * 100).toFixed(2) + '%';
+
+            const profit = Math.max(0, finalVal - totalCost);
+            updateChart('chart-irr', 'pie', {
+                labels: [i18n[currentLang]["lbl-total-principal"], i18n[currentLang]["chart-dataset-earnings"]],
+                datasets: [{
+                    data: [totalCost, profit],
+                    backgroundColor: ['#3b82f6', '#10b981']
+                }]
+            }, { responsive: true, maintainAspectRatio: false });
+        }
+
+        // ==================== 計算器 3: 通膨購買力 ====================
+        function calculateInflation() {
+            const amount = parseFloat(document.getElementById('inf-amount').value) || 0;
+            const rate = parseFloat(document.getElementById('inf-rate').value) || 0;
+            const years = Math.max(1, Math.min(50, parseInt(document.getElementById('inf-years').value) || 0));
+
+            let labels = [], dataReal = [];
+            const steps = Math.ceil(years / 10 || 1);
+            
+            for (let y = 0; y <= years; y += steps) {
+                let realValue = amount / Math.pow(1 + (rate / 100), y);
+                labels.push(currentLang === 'zh' ? `第 ${y} 年` : `Year ${y}`);
+                dataReal.push(realValue);
+            }
+            if(!labels.includes(currentLang === 'zh' ? `第 ${years} 年` : `Year ${years}`)) {
+                labels.push(currentLang === 'zh' ? `第 ${years} 年` : `Year ${years}`);
+                dataReal.push(amount / Math.pow(1 + (rate / 100), years));
+            }
+
+            const finalRealValue = amount / Math.pow(1 + (rate / 100), years);
+            const lossRate = amount > 0 ? ((amount - finalRealValue) / amount) * 100 : 0;
+
+            document.getElementById('res-inf-nominal').innerText = formatCurrency(amount);
+            document.getElementById('res-inf-loss-rate').innerText = lossRate.toFixed(2) + '%';
+            document.getElementById('res-inf-real').innerText = formatCurrency(finalRealValue);
+
+            updateChart('chart-inflation', 'line', {
+                labels: labels,
+                datasets: [{
+                    label: i18n[currentLang]["chart-dataset-power"],
+                    data: dataReal,
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    fill: true,
+                    borderWidth: 3,
+                    tension: 0.1
+                }]
+            }, { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { callback: v => '$' + v.toLocaleString() } } } });
+        }
+
+        // ==================== 計算器 4: 延遲消費 ====================
+        function applyDelayPreset() {
+            const preset = document.getElementById('delay-preset').value;
+            const amountInput = document.getElementById('delay-amount');
+            const freqSelect = document.getElementById('delay-freq');
+
+            if (preset === '150_daily') { amountInput.value = 150; freqSelect.value = "365"; }
+            else if (preset === '3000_monthly') { amountInput.value = 3000; freqSelect.value = "12"; }
+            else if (preset === '35000_yearly') { amountInput.value = 35000; freqSelect.value = "1"; }
+        }
+
+        function calculateDelay() {
+            const amount = parseFloat(document.getElementById('delay-amount').value) || 0;
+            const freq = parseInt(document.getElementById('delay-freq').value) || 1;
+            const roi = parseFloat(document.getElementById('delay-roi').value) || 0;
+            const years = Math.max(1, Math.min(50, parseInt(document.getElementById('delay-years').value) || 0));
+
+            const annualRate = roi / 100;
+            const annualContribution = amount * freq;
+            
+            let labels = [], dataSaved = [], dataInterest = [];
+
+            for (let y = 1; y <= years; y++) {
+                let totalSaved = annualContribution * y;
+                let futureValue = 0;
+                if (annualRate === 0) {
+                    futureValue = totalSaved;
+                } else {
+                    futureValue = annualContribution * ((Math.pow(1 + annualRate, y) - 1) / annualRate);
+                }
+                labels.push(currentLang === 'zh' ? `第 ${y} 年` : `Year ${y}`);
+                dataSaved.push(totalSaved);
+                dataInterest.push(Math.max(0, futureValue - totalSaved));
+            }
+
+            const finalSaved = annualContribution * years;
+            const finalFV = (annualRate === 0) ? finalSaved : annualContribution * ((Math.pow(1 + annualRate, years) - 1) / annualRate);
+
+            document.getElementById('res-delay-saved').innerText = formatCurrency(finalSaved);
+            document.getElementById('res-delay-interest').innerText = formatCurrency(finalFV - finalSaved);
+            document.getElementById('res-delay-total').innerText = formatCurrency(finalFV);
+
+            updateChart('chart-delay', 'bar', {
+                labels: labels,
+                datasets: [
+                    { label: i18n[currentLang]["chart-dataset-saved"], data: dataSaved, backgroundColor: '#a7f3d0' },
+                    { label: i18n[currentLang]["chart-dataset-magic"], data: dataInterest, backgroundColor: '#059669' }
+                ]
+            }, { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => '$' + v.toLocaleString() } } } });
+        }
+
+        // 首次載入初始化
+        window.onload = function() {
+            applyLanguage(); // 套用英文預設
+            calculateCompound();
+            calculateIrr();
+            calculateInflation();
+            calculateDelay();
+        };
+    </script>
 </body>
 </html>

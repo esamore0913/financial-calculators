@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="meta-title">💡 Financial Decision Calculators - Precise Wealth Planning</title>
-      <meta name="google-adsense-account" content="ca-pub-5526769191135274">
+  <meta name="google-adsense-account" content="ca-pub-5526769191135274">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5526769191135274"     
 crossorigin="anonymous"></script>
     <meta name="description" content="2026 Precise Financial Calculator Suite: Compound interest, CAGR/IRR, Inflation erosion, and Delayed gratification tools with dynamic charts and expert actionable insights.">
@@ -17,19 +17,20 @@ crossorigin="anonymous"></script>
     <meta property="og:description" content="Stop guessing with your money. Calculate compound interest, inflation erosion, and real annualized returns instantly.">
     <meta property="og:image" content="https://yourusername.github.io/images/share-cover.png">
 
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="💡 Financial Decision Calculators">
+    <meta name="twitter:description" content="Calculate compound interest, inflation erosion, and real annualized returns instantly.">
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
     <style>
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         .chart-container { position: relative; height: 260px; width: 100%; }
-        /* 呼吸燈動畫，用於即時在線標籤 */
-        @keyframes pulse-slow {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        .animate-pulse-slow { animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
@@ -48,30 +49,32 @@ crossorigin="anonymous"></script>
 
     <main class="flex-grow max-w-5xl w-full mx-auto p-4 md:p-6">
         
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
                 <div>
-                    <span id="dash-live-lbl" class="text-xs text-gray-400 font-medium block uppercase tracking-wider">Live Visitors</span>
-                    <span id="dash-live-count" class="text-2xl font-bold text-gray-900 mt-1">12</span>
+                    <span data-i18n="dash-online-lbl" class="text-xs font-semibold text-gray-400 block uppercase tracking-wider">當前在線訪客</span>
+                    <span id="online-count" class="text-3xl font-black text-gray-900 mt-1 block">1</span>
                 </div>
-                <div class="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-semibold">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 block animate-pulse-slow"></span>
-                    <span id="dash-live-status">Active Now</span>
+                <div class="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-medium animate-pulse">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span data-i18n="dash-online-status">即時監測中</span>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
+
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
                 <div>
-                    <span id="dash-total-lbl" class="text-xs text-gray-400 font-medium block uppercase tracking-wider">Total Calculations</span>
-                    <span id="dash-total-count" class="text-2xl font-bold text-blue-600 mt-1">142,850</span>
+                    <span data-i18n="dash-total-lbl" class="text-xs font-semibold text-gray-400 block uppercase tracking-wider">全球累計計算次數</span>
+                    <span id="total-calculations" class="text-3xl font-black text-blue-600 mt-1 block">142,856</span>
                 </div>
-                <div class="text-gray-400 text-xl">📊</div>
+                <span class="text-xs text-gray-400 bg-gray-50 px-2.5 py-1 rounded-full" data-i18n="dash-demo-tag">累積統計</span>
             </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
+
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
                 <div>
-                    <span id="dash-global-lbl" class="text-xs text-gray-400 font-medium block uppercase tracking-wider">Global Traffic</span>
-                    <span id="dash-global-ratio" class="text-2xl font-bold text-indigo-600 mt-1">38.5%</span>
+                    <span data-i18n="dash-geo-lbl" class="text-xs font-semibold text-gray-400 block uppercase tracking-wider">海外流量占比</span>
+                    <span class="text-3xl font-black text-indigo-600 mt-1 block">38.5%</span>
                 </div>
-                <div id="dash-global-status" class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-medium">International</div>
+                <span class="text-xs text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-full font-medium" data-i18n="dash-geo-tag">國際化站點</span>
             </div>
         </div>
         
@@ -98,19 +101,19 @@ crossorigin="anonymous"></script>
                 <div class="space-y-4">
                     <div>
                         <label data-i18n="comp-lbl-init" class="block text-sm font-medium text-gray-700 mb-1">Initial Principal ($)</label>
-                        <input type="number" id="comp-initial" value="100000" oninput="calculateCompound(); logCalculationEvent('Compound Interest');" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <input type="number" id="comp-initial" value="100000" oninput="calculateCompound(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
                     </div>
                     <div>
                         <label data-i18n="comp-lbl-month" class="block text-sm font-medium text-gray-700 mb-1">Monthly Contribution ($)</label>
-                        <input type="number" id="comp-monthly" value="10000" oninput="calculateCompound()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <input type="number" id="comp-monthly" value="10000" oninput="calculateCompound(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
                     </div>
                     <div>
                         <label data-i18n="comp-lbl-roi" class="block text-sm font-medium text-gray-700 mb-1">Expected Annual Return (%)</label>
-                        <input type="number" id="comp-roi" value="7" step="0.5" oninput="calculateCompound()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <input type="number" id="comp-roi" value="7" step="0.5" oninput="calculateCompound(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
                     </div>
                     <div>
                         <label data-i18n="comp-lbl-years" class="block text-sm font-medium text-gray-700 mb-1">Investment Period (Years)</label>
-                        <input type="number" id="comp-years" value="20" oninput="calculateCompound()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <input type="number" id="comp-years" value="20" oninput="calculateCompound(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 outline-none">
                     </div>
                 </div>
                 <div class="bg-indigo-50 rounded-xl p-5 flex flex-col justify-between border border-indigo-100">
@@ -155,15 +158,15 @@ crossorigin="anonymous"></script>
                     </div>
                     <div>
                         <label id="irr-principal-label" class="block text-sm font-medium text-gray-700 mb-1">Initial Principal Amount ($)</label>
-                        <input type="number" id="irr-principal" value="100000" oninput="calculateIrr(); logCalculationEvent('CAGR/IRR');" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="number" id="irr-principal" value="100000" oninput="calculateIrr(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
                         <label data-i18n="irr-lbl-final" class="block text-sm font-medium text-gray-700 mb-1">Current/Final Asset Value ($)</label>
-                        <input type="number" id="irr-final" value="150000" oninput="calculateIrr()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="number" id="irr-final" value="150000" oninput="calculateIrr(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
                         <label data-i18n="irr-lbl-years" class="block text-sm font-medium text-gray-700 mb-1">Total Duration (Years)</label>
-                        <input type="number" id="irr-years" value="3" step="0.1" oninput="calculateIrr()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input type="number" id="irr-years" value="3" step="0.1" oninput="calculateIrr(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                 </div>
                 <div class="bg-blue-50 rounded-xl p-5 flex flex-col justify-between border border-blue-100">
@@ -201,15 +204,15 @@ crossorigin="anonymous"></script>
                 <div class="space-y-4">
                     <div>
                         <label data-i18n="inf-lbl-amount" class="block text-sm font-medium text-gray-700 mb-1">Current Savings/Retirement Goal ($)</label>
-                        <input type="number" id="inf-amount" value="1000000" oninput="calculateInflation(); logCalculationEvent('Inflation Erosion');" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                        <input type="number" id="inf-amount" value="1000000" oninput="calculateInflation(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
                     </div>
                     <div>
                         <label data-i18n="inf-lbl-rate" class="block text-sm font-medium text-gray-700 mb-1">Estimated Annual Inflation Rate (%)</label>
-                        <input type="number" id="inf-rate" value="3" step="0.1" oninput="calculateInflation()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                        <input type="number" id="inf-rate" value="3" step="0.1" oninput="calculateInflation(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
                     </div>
                     <div>
                         <label data-i18n="inf-lbl-years" class="block text-sm font-medium text-gray-700 mb-1">Years Until Needed</label>
-                        <input type="number" id="inf-years" value="25" oninput="calculateInflation()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
+                        <input type="number" id="inf-years" value="25" oninput="calculateInflation(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-amber-500 outline-none">
                     </div>
                 </div>
                 <div class="bg-amber-50 rounded-xl p-5 flex flex-col justify-between border border-amber-100">
@@ -247,7 +250,7 @@ crossorigin="anonymous"></script>
                 <div class="space-y-4">
                     <div>
                         <label data-i18n="delay-lbl-preset" class="block text-sm font-medium text-gray-700 mb-1">Select Expense Type</label>
-                        <select id="delay-preset" onchange="applyDelayPreset(); calculateDelay(); logCalculationEvent('Delayed Gratification');" class="w-full border border-gray-300 rounded-lg p-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <select id="delay-preset" onchange="applyDelayPreset(); calculateDelay(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
                             <option value="150_daily">Skip Premium Coffee/Drinks ($150/Day)</option>
                             <option value="3000_monthly">Skip Monthly Apparel/Dining Out ($3,000/Month)</option>
                             <option value="35000_yearly">Skip Annual Flagship Phone Upgrade ($35,000/Year)</option>
@@ -257,11 +260,11 @@ crossorigin="anonymous"></script>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label data-i18n="delay-lbl-amount" class="block text-sm font-medium text-gray-700 mb-1">Amount ($)</label>
-                            <input type="number" id="delay-amount" value="150" oninput="calculateDelay()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <input type="number" id="delay-amount" value="150" oninput="calculateDelay(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
                         </div>
                         <div>
                             <label data-i18n="delay-lbl-freq" class="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
-                            <select id="delay-freq" onchange="calculateDelay()" class="w-full border border-gray-300 rounded-lg p-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <select id="delay-freq" onchange="calculateDelay(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
                                 <option value="365">Daily</option>
                                 <option value="12">Monthly</option>
                                 <option value="1">Yearly</option>
@@ -270,11 +273,11 @@ crossorigin="anonymous"></script>
                     </div>
                     <div>
                         <label data-i18n="delay-lbl-roi" class="block text-sm font-medium text-gray-700 mb-1">Expected Annual Return (%)</label>
-                        <input type="number" id="delay-roi" value="8" step="0.5" oninput="calculateDelay()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <input type="number" id="delay-roi" value="8" step="0.5" oninput="calculateDelay(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
                     </div>
                     <div>
                         <label data-i18n="delay-lbl-years" class="block text-sm font-medium text-gray-700 mb-1">Persistence Period (Years)</label>
-                        <input type="number" id="delay-years" value="20" oninput="calculateDelay()" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <input type="number" id="delay-years" value="20" oninput="calculateDelay(); logCalculation();" class="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
                     </div>
                 </div>
                 <div class="bg-emerald-50 rounded-xl p-5 flex flex-col justify-between border border-emerald-100">
@@ -312,33 +315,61 @@ crossorigin="anonymous"></script>
     </footer>
 
     <script>
-        let currentLang = 'en'; 
-        let charts = {};
+        // --- 1. FIREBASE 實時在線人數統計設定 ---
+        // 請至 Firebase Console 建立專案後，將您的設定檔複製替換至下方：
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-        // --- 儀表板動態數據模擬與事件 (Dashboard Live Logic) ---
-        function updateLiveDashboard() {
-            // 模擬即時在線人數隨機小幅起伏 (10~25人之間)
-            const liveCount = Math.floor(Math.random() * 15) + 10;
-            document.getElementById('dash-live-count').innerText = liveCount;
+        // 初始化 Firebase (僅在金鑰有效時執行)
+        if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.database();
             
-            // 讓總計算次數隨著時間自動微微增加
-            let currentTotal = parseInt(document.getElementById('dash-total-count').innerText.replace(/,/g, ''));
-            currentTotal += Math.floor(Math.random() * 2);
-            document.getElementById('dash-total-count').innerText = currentTotal.toLocaleString();
-        }
-        // 每 5 秒更新一次儀表板數據，呈現即時看板質感
-        setInterval(updateLiveDashboard, 5000);
+            // 在線人數監測邏輯
+            const onlineRef = db.ref('.info/connected');
+            const userRef = db.ref('online_users').push();
 
-        // 當使用者輸入或計算時觸發的動態計數事件 (與 GA4 event 連動概念相同)
-        function logCalculationEvent(calculatorType) {
-            let currentTotal = parseInt(document.getElementById('dash-total-count').innerText.replace(/,/g, ''));
-            currentTotal += 1;
-            document.getElementById('dash-total-count').innerText = currentTotal.toLocaleString();
-            
-            // 如果你未來埋入 GA4 追蹤碼，可以在此同時發送真實事件：
-            // if(typeof gtag === 'function') { gtag('event', 'calculate', { 'type': calculatorType }); }
-            console.log(`[Dashboard Log] User triggered calculation on: ${calculatorType}`);
+            onlineRef.on('value', (snapshot) => {
+                if (snapshot.val() === true) {
+                    // 當用戶連線時，將節點設為 true，並設定中斷連線時自動刪除
+                    userRef.setValue(true);
+                    userRef.onDisconnect().remove();
+                }
+            });
+
+            // 監聽並即時更新畫面的在線人數
+            db.ref('online_users').on('value', (snapshot) => {
+                const count = snapshot.numChildren() || 1;
+                document.getElementById('online-count').innerText = count.toLocaleString();
+            });
+
+            // (選填) 動態累計次數統計邏輯
+            db.ref('stats/total_calculations').on('value', (snapshot) => {
+                if(snapshot.exists()) {
+                    document.getElementById('total-calculations').innerText = parseInt(snapshot.val()).toLocaleString();
+                }
+            });
         }
+
+        // 當使用者觸發計算時，自動讓資料庫的總計算次數 +1
+        function logCalculation() {
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                firebase.database().ref('stats/total_calculations').transaction((currentValue) => {
+                    return (currentValue || 142856) + 1;
+                });
+            }
+        }
+
+
+        // --- 2. 語系配置字典 (Dictionary) ---
+        let currentLang = 'en'; // 預設為英文版
 
         const i18n = {
             en: {
@@ -350,14 +381,14 @@ crossorigin="anonymous"></script>
                 "tab-irr": "📈 Annualized Return (CAGR)",
                 "tab-inf": "💸 Inflation Erosion",
                 "tab-delay": "☕ Delayed Gratification",
-                
-                // Dashboard
-                "dash-live-lbl": "Live Visitors",
-                "dash-live-status": "Active Now",
-                "dash-total-lbl": "Total Calculations",
-                "dash-global-lbl": "Global Traffic",
-                "dash-global-status": "International",
 
+                "dash-online-lbl": "Live Active Visitors",
+                "dash-online-status": "Live Monitoring",
+                "dash-total-lbl": "Global Total Calculations",
+                "dash-demo-tag": "Aggregated",
+                "dash-geo-lbl": "Overseas Traffic Ratio",
+                "dash-geo-tag": "Internationalized",
+                
                 "comp-h2": "Core Asset Compound Interest Calculator",
                 "comp-p": "Set your initial principal and monthly contributions to see how time multiplies your wealth.",
                 "comp-lbl-init": "Initial Principal ($)",
@@ -441,20 +472,20 @@ crossorigin="anonymous"></script>
             zh: {
                 "meta-title": "💡 精準理財決策計算器 - 算過才敢理財",
                 "nav-title": "💡 精準理財決策計算器",
-                "nav-subtitle": "看清資產的真實價值，拒絕憑感覺理財。",
+                "nav-subtitle": "看清資產的真實價值，拒減憑感覺理財。",
                 "lang-btn-text": "English",
                 "tab-comp": "💰 複利滾存資產",
                 "tab-irr": "📈 年化收益 (CAGR)",
                 "tab-inf": "💸 通膨購買力",
                 "tab-delay": "☕ 延遲消費複利",
-                
-                // 儀表板
-                "dash-live-lbl": "當前在線訪客",
-                "dash-live-status": "即時監測中",
-                "dash-total-lbl": "全球累計計算次數",
-                "dash-global-lbl": "海外流量佔比",
-                "dash-global-status": "國際化站點",
 
+                "dash-online-lbl": "當前在線訪客",
+                "dash-online-status": "即時監測中",
+                "dash-total-lbl": "全球累計計算次數",
+                "dash-demo-tag": "累積統計",
+                "dash-geo-lbl": "海外流量占比",
+                "dash-geo-tag": "國際化站點",
+                
                 "comp-h2": "核心資產複利滾存計算器",
                 "comp-p": "設定你的單筆本金與定期定額，看看在時間的魔法下，資產能滾到多大。",
                 "comp-lbl-init": "單筆初始投入本金 ($)",
@@ -537,6 +568,10 @@ crossorigin="anonymous"></script>
             }
         };
 
+        // --- 全域圖表執行個體物件 ---
+        let charts = {};
+
+        // --- 語系無縫切換機制 ---
         function toggleLanguage() {
             currentLang = (currentLang === 'en') ? 'zh' : 'en';
             applyLanguage();
@@ -556,15 +591,8 @@ crossorigin="anonymous"></script>
             document.getElementById('lang-btn-text').innerText = dict["lang-btn-text"];
             document.getElementById('footer-disclaimer').innerText = dict["footer-disclaimer"];
 
-            // Dashboard 語系更換
-            document.getElementById('dash-live-lbl').innerText = dict["dash-live-lbl"];
-            document.getElementById('dash-live-status').innerText = dict["dash-live-status"];
-            document.getElementById('dash-total-lbl').innerText = dict["dash-total-lbl"];
-            document.getElementById('dash-global-lbl').innerText = dict["dash-global-lbl"];
-            document.getElementById('dash-global-status').innerText = dict["dash-global-status"];
-
             document.getElementById('btn-tab-compound').innerText = dict["tab-comp"];
-            document.getElementById('btn-tab-irr').innerText = dict["tab-comp"] ? dict["tab-irr"] : ''; 
+            document.getElementById('btn-tab-irr').innerText = dict["tab-irr"];
             document.getElementById('btn-tab-inflation').innerText = dict["tab-inf"];
             document.getElementById('btn-tab-delay').innerText = dict["tab-delay"];
 
@@ -640,12 +668,14 @@ crossorigin="anonymous"></script>
         }
 
         function updateChart(chartId, type, data, options) {
-            if (charts[chartId]) { charts[chartId].destroy(); }
+            if (charts[chartId]) {
+                charts[chartId].destroy();
+            }
             const ctx = document.getElementById(chartId).getContext('2d');
             charts[chartId] = new Chart(ctx, { type, data, options });
         }
 
-        // ==================== 計算器 1 到 4 的核心演算法邏輯 ====================
+        // ==================== 計算器 1: 複利滾存 ====================
         function calculateCompound() {
             const initial = parseFloat(document.getElementById('comp-initial').value) || 0;
             const monthly = parseFloat(document.getElementById('comp-monthly').value) || 0;
@@ -684,6 +714,7 @@ crossorigin="anonymous"></script>
             }, { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { callback: v => '$' + v.toLocaleString() } } } });
         }
 
+        // ==================== 計算器 2: IRR / CAGR ====================
         function toggleIrrInput() {
             const mode = document.getElementById('irr-mode').value;
             const label = document.getElementById('irr-principal-label');
@@ -696,18 +727,24 @@ crossorigin="anonymous"></script>
             const finalVal = parseFloat(document.getElementById('irr-final').value) || 0;
             const years = parseFloat(document.getElementById('irr-years').value) || 1;
 
-            let totalCost = 0; let annualRate = 0;
+            let totalCost = 0;
+            let annualRate = 0;
 
             if (mode === 'single') {
                 totalCost = principal;
-                if (principal > 0 && finalVal > 0) { annualRate = Math.pow((finalVal / principal), (1 / years)) - 1; }
+                if (principal > 0 && finalVal > 0) {
+                    annualRate = Math.pow((finalVal / principal), (1 / years)) - 1;
+                }
             } else {
                 const numPayments = Math.max(1, Math.round(years));
                 totalCost = principal * numPayments;
+                
                 let low = -0.99, high = 5.0, guess = 0.05;
                 for (let i = 0; i < 100; i++) {
                     let fv = 0;
-                    for (let t = 0; t < numPayments; t++) { fv += principal * Math.pow(1 + guess, years - t); }
+                    for (let t = 0; t < numPayments; t++) {
+                        fv += principal * Math.pow(1 + guess, years - t);
+                    }
                     if (Math.abs(fv - finalVal) < 0.01) break;
                     (fv > finalVal) ? high = guess : low = guess;
                     guess = (low + high) / 2;
@@ -716,6 +753,7 @@ crossorigin="anonymous"></script>
             }
 
             const totalRate = totalCost > 0 ? ((finalVal - totalCost) / totalCost) * 100 : 0;
+
             document.getElementById('res-irr-cost').innerText = formatCurrency(totalCost);
             document.getElementById('res-irr-total-rate').innerText = (totalRate >= 0 ? '+' : '') + totalRate.toFixed(2) + '%';
             document.getElementById('res-irr-total-rate').className = totalRate < 0 ? "text-lg font-bold text-rose-600" : "text-lg font-bold text-emerald-600";
@@ -724,19 +762,26 @@ crossorigin="anonymous"></script>
             const profit = Math.max(0, finalVal - totalCost);
             updateChart('chart-irr', 'pie', {
                 labels: [i18n[currentLang]["lbl-total-principal"], i18n[currentLang]["chart-dataset-earnings"]],
-                datasets: [{ data: [totalCost, profit], backgroundColor: ['#3b82f6', '#10b981'] }]
+                datasets: [{
+                    data: [totalCost, profit],
+                    backgroundColor: ['#3b82f6', '#10b981']
+                }]
             }, { responsive: true, maintainAspectRatio: false });
         }
 
+        // ==================== 計算器 3: 通膨購買力 ====================
         function calculateInflation() {
             const amount = parseFloat(document.getElementById('inf-amount').value) || 0;
             const rate = parseFloat(document.getElementById('inf-rate').value) || 0;
             const years = Math.max(1, Math.min(50, parseInt(document.getElementById('inf-years').value) || 0));
 
-            let labels = [], dataReal = []; const steps = Math.ceil(years / 10 || 1);
+            let labels = [], dataReal = [];
+            const steps = Math.ceil(years / 10 || 1);
+            
             for (let y = 0; y <= years; y += steps) {
                 let realValue = amount / Math.pow(1 + (rate / 100), y);
-                labels.push(currentLang === 'zh' ? `第 ${y} 年` : `Year ${y}`); dataReal.push(realValue);
+                labels.push(currentLang === 'zh' ? `第 ${y} 年` : `Year ${y}`);
+                dataReal.push(realValue);
             }
             if(!labels.includes(currentLang === 'zh' ? `第 ${years} 年` : `Year ${years}`)) {
                 labels.push(currentLang === 'zh' ? `第 ${years} 年` : `Year ${years}`);
@@ -753,16 +798,23 @@ crossorigin="anonymous"></script>
             updateChart('chart-inflation', 'line', {
                 labels: labels,
                 datasets: [{
-                    label: i18n[currentLang]["chart-dataset-power"], data: dataReal,
-                    borderColor: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.1)', fill: true, borderWidth: 3, tension: 0.1
+                    label: i18n[currentLang]["chart-dataset-power"],
+                    data: dataReal,
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    fill: true,
+                    borderWidth: 3,
+                    tension: 0.1
                 }]
             }, { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { callback: v => '$' + v.toLocaleString() } } } });
         }
 
+        // ==================== 計算器 4: 延遲消費 ====================
         function applyDelayPreset() {
             const preset = document.getElementById('delay-preset').value;
             const amountInput = document.getElementById('delay-amount');
             const freqSelect = document.getElementById('delay-freq');
+
             if (preset === '150_daily') { amountInput.value = 150; freqSelect.value = "365"; }
             else if (preset === '3000_monthly') { amountInput.value = 3000; freqSelect.value = "12"; }
             else if (preset === '35000_yearly') { amountInput.value = 35000; freqSelect.value = "1"; }
@@ -774,15 +826,22 @@ crossorigin="anonymous"></script>
             const roi = parseFloat(document.getElementById('delay-roi').value) || 0;
             const years = Math.max(1, Math.min(50, parseInt(document.getElementById('delay-years').value) || 0));
 
-            const annualRate = roi / 100; const annualContribution = amount * freq;
+            const annualRate = roi / 100;
+            const annualContribution = amount * freq;
+            
             let labels = [], dataSaved = [], dataInterest = [];
 
             for (let y = 1; y <= years; y++) {
-                let totalSaved = annualContribution * y; let futureValue = 0;
-                if (annualRate === 0) { futureValue = totalSaved; } 
-                else { futureValue = annualContribution * ((Math.pow(1 + annualRate, y) - 1) / annualRate); }
+                let totalSaved = annualContribution * y;
+                let futureValue = 0;
+                if (annualRate === 0) {
+                    futureValue = totalSaved;
+                } else {
+                    futureValue = annualContribution * ((Math.pow(1 + annualRate, y) - 1) / annualRate);
+                }
                 labels.push(currentLang === 'zh' ? `第 ${y} 年` : `Year ${y}`);
-                dataSaved.push(totalSaved); dataInterest.push(Math.max(0, futureValue - totalSaved));
+                dataSaved.push(totalSaved);
+                dataInterest.push(Math.max(0, futureValue - totalSaved));
             }
 
             const finalSaved = annualContribution * years;
